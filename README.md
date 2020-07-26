@@ -1,4 +1,4 @@
-# flash_rom
+# flash_tool
 
 A new Flutter package project.
 

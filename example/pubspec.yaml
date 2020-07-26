@@ -23,7 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  flash_rom:
+  flash_tool:
     # When depending on this package from a real application you should use:
     #   flutter_terminal: ^x.y.z
     # See https://dart.dev/tools/pub/dependencies#version-constraints

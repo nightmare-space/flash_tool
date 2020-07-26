@@ -1,4 +1,4 @@
-import 'package:flash_rom/flash_tool.dart';
+import 'package:flash_tool/flash_tool.dart';
 import 'package:flutter/material.dart';
 import '';
 
