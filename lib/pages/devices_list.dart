@@ -45,7 +45,7 @@ class _DevicesListState extends State<DevicesList> {
             'devices',
           ],
 
-          runInShell: false,
+          runInShell: true,
           environment: <String, String>{
             'Path': 'D:\\SDK\\Android\\platform-tools',
           },
@@ -68,7 +68,7 @@ class _DevicesListState extends State<DevicesList> {
                 'getvar',
                 'product',
               ],
-              runInShell: false,
+              runInShell: true,
               environment: <String, String>{
                 'Path': 'D:\\SDK\\Android\\platform-tools',
               },

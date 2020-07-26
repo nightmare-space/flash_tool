@@ -1,6 +1,7 @@
 import 'package:flash_tool/flash_tool.dart';
 import 'package:flutter/material.dart';
 import '';
+import 'win_term.dart';
 
 void main() {
   runApp(MyApp());
@@ -27,6 +28,7 @@ class MyApp extends StatelessWidget {
         // closer together (more dense) than on mobile platforms.
         visualDensity: VisualDensity.adaptivePlatformDensity,
       ),
+      // home: WinTerm(),
       home: FlashRomPC(),
     );
   }

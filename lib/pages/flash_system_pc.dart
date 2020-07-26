@@ -225,7 +225,7 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
               runInShell: false,
               environment: envir,
               mode: kReleaseMode
-                  ? ProcessStartMode.normal
+                  ? ProcessStartMode.detachedWithStdio
                   : ProcessStartMode.normal,
             ).then((value) {
               value.stdout.transform(utf8.decoder).listen((String out) {
