@@ -7,6 +7,7 @@ import 'package:flash_tool/config/toolkit_colors.dart';
 import 'package:flash_tool/provider/devices_state.dart';
 import 'package:flash_tool/themes/text_colors.dart';
 import 'package:flash_tool/widgets/custom_list.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -219,13 +220,13 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
             cmdNumber =
                 File(batPath).readAsStringSync().trim().split('\n').length - 2;
             Process.start(
-              'call',
-              <String>[
-                batPath,
-              ],
-              runInShell: true,
-              includeParentEnvironment: true,
+              batPath,
+              <String>[],
+              runInShell: false,
               environment: envir,
+              mode: kReleaseMode
+                  ? ProcessStartMode.normal
+                  : ProcessStartMode.normal,
             ).then((value) {
               value.stdout.transform(utf8.decoder).listen((String out) {
                 print('====>$out');
