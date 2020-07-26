@@ -1,5 +1,5 @@
-import 'package:flash_rom/provider/devices_state.dart';
-import 'package:flash_rom/themes/text_colors.dart';
+import 'package:flash_tool/provider/devices_state.dart';
+import 'package:flash_tool/themes/text_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';

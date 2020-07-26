@@ -1,9 +1,9 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:file_chooser/file_chooser.dart';
-import 'package:flash_rom/config/toolkit_colors.dart';
-import 'package:flash_rom/provider/devices_state.dart';
-import 'package:flash_rom/themes/text_colors.dart';
+import 'package:flash_tool/config/toolkit_colors.dart';
+import 'package:flash_tool/provider/devices_state.dart';
+import 'package:flash_tool/themes/text_colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';

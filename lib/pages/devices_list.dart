@@ -1,6 +1,6 @@
 import 'dart:io';
 
-import 'package:flash_rom/provider/devices_state.dart';
+import 'package:flash_tool/provider/devices_state.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
