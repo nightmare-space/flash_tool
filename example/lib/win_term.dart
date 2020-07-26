@@ -25,30 +25,12 @@ class _WinTermState extends State<WinTerm> {
   }
 
   Future<void> init() async {
-    await run('dart', ['--version'], verbose: true);
-
-    final shell = Shell();
-    await shell.run('''
-
-# Display some text
-echo Hello
-
-# Display dart version
-dart --version
-
-# Display pub version
-pub --version
-
-''');
     // envirInit();
     winProcess = await Process.start(
-      'cmd',
-      [
-        '>con',
-        '2>con',
-      ],
+      'sh',
+      [],
       runInShell: false,
-      mode: ProcessStartMode.detachedWithStdio,
+      mode: ProcessStartMode.normal,
       // mode: kReleaseMode
       //     ? ProcessStartMode.detachedWithStdio
       //     : ProcessStartMode.normal,
@@ -124,7 +106,7 @@ pub --version
 
   @override
   Widget build(BuildContext context) {
-    final String tmpPath = Platform.environment['Tmp'] + '\\MToolkit';
+    // final String tmpPath = Platform.environment['Tmp'] + '\\MToolkit';
     // print("7z x -y -aoa -p906262255 ${PlatformUtil.getUnixPath(EnvirPath.binPath)}/msys-libcontext.dll -o${PlatformUtil.getUnixPath(tmpPath)}");
     listSpan.clear();
     final TextStyle textStyle = TextStyle(

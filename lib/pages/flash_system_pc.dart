@@ -33,6 +33,7 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
   int cmdNumber = 0;
   Timer timer;
   int alreadyUseTime = 0;
+  String shType = Platform.isWindows ? 'bat' : 'sh';
   FlashMode _flashMode = FlashMode.saveUserData;
   void changeFlashMode(FlashMode flashMode) {
     _flashMode = flashMode;
@@ -95,7 +96,7 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
               onTap: () async {
                 FileChooserResult fileChooserResult = await showOpenPanel(
                   allowedFileTypes: [
-                    FileTypeFilterGroup(label: 'bat', fileExtensions: ['bat'])
+                    FileTypeFilterGroup(label: shType, fileExtensions: [shType])
                   ],
                 );
                 romPath =
@@ -204,17 +205,26 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
             Map<String, String> envir = Map.from(Platform.environment);
             // print(envir);
             print(envir['PATH']);
-            envir['PATH'] += ';D:\\SDK\\Android\\platform-tools';
+            if (Platform.isWindows) {
+              envir['PATH'] += ';D:\\SDK\\Android\\platform-tools';
+            }
+            print(envir['PATH']);
             String batPath = '';
             switch (_flashMode) {
               case FlashMode.deleteAll:
-                batPath = '$romPath\\flash_all.bat';
+                batPath = Platform.isWindows
+                    ? '$romPath/flash_all.bat'
+                    : '$romPath/flash_all.sh';
                 break;
               case FlashMode.saveUserData:
-                batPath = '$romPath\\flash_all_except_storage.bat';
+                batPath = Platform.isWindows
+                    ? '$romPath/flash_all_except_storage.bat'
+                    : '$romPath/flash_all_except_storage.sh';
                 break;
               case FlashMode.deleteAllAndLock:
-                batPath = '$romPath\\flash_all_lock.bat';
+                batPath = Platform.isWindows
+                    ? '$romPath/flash_all_lock.bat'
+                    : '$romPath/flash_all_lock.sh';
                 break;
             }
             cmdNumber =

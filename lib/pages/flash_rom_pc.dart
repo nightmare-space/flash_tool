@@ -1,3 +1,4 @@
+import 'package:flash_tool/config/toolkit_colors.dart';
 import 'package:flash_tool/provider/devices_state.dart';
 import 'package:flash_tool/themes/text_colors.dart';
 import 'package:flutter/material.dart';
@@ -47,110 +48,115 @@ class _FlashRomPCState extends State<FlashRomPC>
     }
     return ChangeNotifierProvider<DevicesState>(
       create: (_) => DevicesState(),
-      child: Scaffold(
-        backgroundColor: Color(0xfffbfbfd),
-        body: Row(
-          children: [
-            Container(
-              width: MediaQuery.of(context).size.width / 5,
-              height: MediaQuery.of(context).size.height,
-              decoration: BoxDecoration(
-                color: Colors.white,
-              ),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Align(
-                        alignment: Alignment.centerLeft,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(25)),
-                          height: 36.w.toDouble(),
-                          width: 36.w.toDouble(),
-                          child: Material(
-                            color: Colors.white,
-                            child: InkWell(
-                              // highlightColor: C,
-                              borderRadius:
-                                  BorderRadius.circular(18.w.toDouble()),
-                              child: Icon(
-                                Icons.arrow_back,
+      child: Theme(
+        data: ThemeData(
+          accentColor: MToolkitColors.accentColor,
+        ),
+        child: Scaffold(
+          backgroundColor: Color(0xfffbfbfd),
+          body: Row(
+            children: [
+              Container(
+                width: MediaQuery.of(context).size.width / 5,
+                height: MediaQuery.of(context).size.height,
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                ),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Stack(
+                      alignment: Alignment.center,
+                      children: [
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Container(
+                            decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(25)),
+                            height: 36.w.toDouble(),
+                            width: 36.w.toDouble(),
+                            child: Material(
+                              color: Colors.white,
+                              child: InkWell(
+                                // highlightColor: C,
+                                borderRadius:
+                                    BorderRadius.circular(18.w.toDouble()),
+                                child: Icon(
+                                  Icons.arrow_back,
+                                  color: TextColors.fontColor,
+                                ),
+                                onTap: () {
+                                  Navigator.of(context).pop();
+                                },
+                              ),
+                            ),
+                          ),
+                        ),
+                        SizedBox(
+                          height: 100.w.toDouble(),
+                          child: Center(
+                            child: Text(
+                              '刷机助手',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 28.w.toDouble(),
                                 color: TextColors.fontColor,
                               ),
-                              onTap: () {
-                                Navigator.of(context).pop();
-                              },
                             ),
                           ),
                         ),
-                      ),
-                      SizedBox(
-                        height: 100.w.toDouble(),
-                        child: Center(
-                          child: Text(
-                            '刷机助手',
-                            style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 28.w.toDouble(),
-                              color: TextColors.fontColor,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  getNavItem(
-                    prefix: Icon(Icons.system_update),
-                    title: '刷写系统',
-                    index: 0,
-                  ),
-                  getNavItem(
-                    prefix: Icon(Icons.refresh),
-                    title: '刷写Recovery',
-                    index: 1,
-                  ),
-                  getNavItem(
-                    prefix: Icon(Icons.usb),
-                    title: '刷写其他分区',
-                    index: 2,
-                  ),
-                  getNavItem(
-                    prefix: Text(
-                      'F',
-                      style: TextStyle(
-                        fontSize: 24.sp.toDouble(),
-                        fontWeight: FontWeight.bold,
-                      ),
+                      ],
                     ),
-                    title: 'Fastboot功能专区',
-                    index: 3,
-                  ),
-                  Text('设备列表'),
-                  DevicesList(),
-                ],
-              ),
-            ),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 4 / 5,
-              child: MediaQuery(
-                data: MediaQueryData(
-                  size: Size(
-                    MediaQuery.of(context).size.width * 4 / 5,
-                    MediaQuery.of(context).size.height,
-                  ),
+                    getNavItem(
+                      prefix: Icon(Icons.system_update),
+                      title: '刷写系统',
+                      index: 0,
+                    ),
+                    getNavItem(
+                      prefix: Icon(Icons.refresh),
+                      title: '刷写Recovery',
+                      index: 1,
+                    ),
+                    getNavItem(
+                      prefix: Icon(Icons.usb),
+                      title: '刷写其他分区',
+                      index: 2,
+                    ),
+                    getNavItem(
+                      prefix: Text(
+                        'F',
+                        style: TextStyle(
+                          fontSize: 24.sp.toDouble(),
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      title: 'Fastboot功能专区',
+                      index: 3,
+                    ),
+                    Text('设备列表'),
+                    DevicesList(),
+                  ],
                 ),
-                child: [
-                  FlashSystemPc(),
-                  FlashRecoveryPC(),
-                  FlashRecoveryPC(),
-                  FastbootFunc(),
-                ][pageIndex],
               ),
-            )
-          ],
+              SizedBox(
+                width: MediaQuery.of(context).size.width * 4 / 5,
+                child: MediaQuery(
+                  data: MediaQueryData(
+                    size: Size(
+                      MediaQuery.of(context).size.width * 4 / 5,
+                      MediaQuery.of(context).size.height,
+                    ),
+                  ),
+                  child: [
+                    FlashSystemPc(),
+                    FlashRecoveryPC(),
+                    FlashRecoveryPC(),
+                    FastbootFunc(),
+                  ][pageIndex],
+                ),
+              )
+            ],
+          ),
         ),
       ),
     );
