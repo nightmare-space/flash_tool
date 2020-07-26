@@ -1,10 +1,19 @@
 import 'dart:io';
 
 import 'package:flash_tool/provider/devices_state.dart';
+import 'package:flash_tool/utils/device_utils.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:print_color/print_color.dart';
 import 'package:provider/provider.dart';
+
+class DeviceEntity {
+  final String deviceID;
+  final String deviceName;
+
+  DeviceEntity(this.deviceID, this.deviceName);
+}
 
 class DevicesList extends StatefulWidget {
   @override
@@ -12,7 +21,7 @@ class DevicesList extends StatefulWidget {
 }
 
 class _DevicesListState extends State<DevicesList> {
-  List<String> devices = [];
+  List<DeviceEntity> devices = [];
   int deviceIndex = 0;
   @override
   void initState() {
@@ -22,9 +31,12 @@ class _DevicesListState extends State<DevicesList> {
 
   Future<void> checkAdb() async {
     while (mounted) {
-      await Future.delayed(Duration(milliseconds: 1000));
-      if (devicesState.lock) continue;
-      devices.clear();
+      await Future<void>.delayed(const Duration(milliseconds: 1000));
+      if (devicesState.lock) {
+        continue;
+      }
+      List<DeviceEntity> tmp = [];
+      // devices.clear();
       ProcessResult result;
       try {
         result = await Process.run(
@@ -32,7 +44,8 @@ class _DevicesListState extends State<DevicesList> {
           [
             'devices',
           ],
-          runInShell: true,
+
+          runInShell: false,
           environment: <String, String>{
             'Path': 'D:\\SDK\\Android\\platform-tools',
           },
@@ -41,25 +54,54 @@ class _DevicesListState extends State<DevicesList> {
       } catch (e) {
         // print('asdasdasd====>$e');
       }
-      if (result.stdout.toString().trim().isNotEmpty) {
-        for (String line
-            in result.stdout.toString().trim().split(RegExp('\n'))) {
-          devices.add(line.split(RegExp('\\s')).first);
+      String trimResult = result.stdout.toString().trim();
+      if (trimResult.isNotEmpty) {
+        for (String line in trimResult.split('\n')) {
+          String deviceId = line.split(RegExp('\\s')).first;
+          ProcessResult result;
+          try {
+            result = await Process.run(
+              'fastboot',
+              [
+                '-s',
+                deviceId,
+                'getvar',
+                'product',
+              ],
+              runInShell: false,
+              environment: <String, String>{
+                'Path': 'D:\\SDK\\Android\\platform-tools',
+              },
+              // includeParentEnvironment: true,
+            );
+          } catch (e) {
+            // print('asdasdasd====>$e');
+          }
+
+          String deviceName = result.stderr
+              .toString()
+              .split('\n')
+              .first
+              .trim()
+              .replaceAll(RegExp('.*\\s'), '');
+          DeviceEntity deviceEntity =
+              DeviceEntity(deviceId, DeviceUtils.getName(deviceName));
+          tmp.add(deviceEntity);
         }
       }
+      if (devicesState.lock) continue;
+      devices = tmp;
       if (mounted) setState(() {});
-      // debugPrintWithColor(
-      //   '   fastboot输出====>${result.stdout}   ',
-      //   backgroundColor: PrintColor.green,
-      //   fontColor: PrintColor.black,
-      // );
+      if (devices.isNotEmpty) {
+        devicesState.setDevice(devices[deviceIndex].deviceID);
+      }
     }
   }
 
   DevicesState devicesState;
   @override
   Widget build(BuildContext context) {
-    devicesState = Provider.of(context);
+    devicesState = Provider.of(context, listen: false);
     return SizedBox(
       height: 48 * devices.length.w.toDouble(),
       child: ListView.builder(
@@ -72,12 +114,12 @@ class _DevicesListState extends State<DevicesList> {
                 groupValue: deviceIndex,
                 onChanged: (int index) {
                   deviceIndex = index;
-                  devicesState.setDevice(devices[i]);
+                  devicesState.setDevice(devices[i].deviceID);
                   setState(() {});
                 },
               ),
               Text(
-                devices[i],
+                '${devices[i].deviceID}  ${devices[i].deviceName}',
               ),
             ],
           );

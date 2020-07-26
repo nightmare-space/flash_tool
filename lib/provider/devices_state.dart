@@ -10,11 +10,9 @@ class DevicesState extends ChangeNotifier {
 
   void setLock() {
     lock = true;
-    notifyListeners();
   }
 
   void unLock() {
     lock = false;
-    notifyListeners();
   }
 }

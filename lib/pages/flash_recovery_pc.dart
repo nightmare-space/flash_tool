@@ -4,6 +4,7 @@ import 'package:file_chooser/file_chooser.dart';
 import 'package:flash_tool/config/toolkit_colors.dart';
 import 'package:flash_tool/provider/devices_state.dart';
 import 'package:flash_tool/themes/text_colors.dart';
+import 'package:flash_tool/widgets/custom_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -124,6 +125,7 @@ class _FlashRecoveryPCState extends State<FlashRecoveryPC> {
               Process.start(
                 'fastboot',
                 [
+                  '-v',
                   'flash',
                   'recovery',
                   recPath,
@@ -138,12 +140,13 @@ class _FlashRecoveryPCState extends State<FlashRecoveryPC> {
                 // });
                 value.stderr.transform(utf8.decoder).listen((String out) {
                   termOut += out;
+                  if (out.contains('Finished')) {
+                    devicesState.unLock();
+                  }
                   setState(() {});
                   print('====>$out');
                 });
               });
-
-              devicesState.unLock();
             },
             child: Container(
               margin: EdgeInsets.all(16.w.toDouble()),
@@ -170,7 +173,7 @@ class _FlashRecoveryPCState extends State<FlashRecoveryPC> {
           Container(
             margin: EdgeInsets.all(16.w.toDouble()),
             decoration: BoxDecoration(
-              color: Color(0xFFF0F1F3),
+              color: const Color(0xFFF0F1F3),
               borderRadius: BorderRadius.circular(
                 12.w.toDouble(),
               ),
@@ -178,12 +181,14 @@ class _FlashRecoveryPCState extends State<FlashRecoveryPC> {
             width: MediaQuery.of(context).size.width * 4 / 5,
             child: Padding(
               padding: EdgeInsets.all(8.w.toDouble()),
-              child: Text(
-                termOut == '' ? '等待刷入' : '${termOut.trim()}',
-                style: TextStyle(
-                  fontSize: 18.w.toDouble(),
-                  fontWeight: FontWeight.bold,
-                  color: TextColors.fontColor,
+              child: CustomList(
+                child: Text(
+                  termOut == '' ? '等待刷入' : '${termOut.trim()}',
+                  style: TextStyle(
+                    fontSize: 18.w.toDouble(),
+                    fontWeight: FontWeight.bold,
+                    color: TextColors.fontColor,
+                  ),
                 ),
               ),
             ),
