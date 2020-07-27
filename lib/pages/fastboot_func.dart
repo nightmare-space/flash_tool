@@ -67,7 +67,7 @@ class _FastbootFuncState extends State<FastbootFunc> {
             'fastboot',
             [
               '-s',
-              '${devicesState.curDevice}',
+              devicesState.curDevice,
               'reboot',
             ],
             runInShell: true,

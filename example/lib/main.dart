@@ -1,7 +1,5 @@
 import 'package:flash_tool/flash_tool.dart';
 import 'package:flutter/material.dart';
-import '';
-import 'win_term.dart';
 
 void main() {
   runApp(MyApp());
