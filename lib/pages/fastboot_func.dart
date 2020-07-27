@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flash_tool/config/config.dart';
 import 'package:flash_tool/config/toolkit_colors.dart';
 import 'package:flash_tool/provider/devices_state.dart';
 import 'package:flutter/material.dart';
@@ -32,35 +33,13 @@ class _FastbootFuncState extends State<FastbootFunc> {
   Widget getFuncItem({
     String title,
   }) {
-    DevicesState devicesState = Provider.of(context);
+    final DevicesState devicesState = Provider.of(context);
     return GestureDetector(
       onTap: () async {
-        // ProcessResult result;
-        // debugPrintWithColor(
-        //   '   sdfsdf         ',
-        //   backgroundColor: PrintColor.white,
-        //   fontColor: PrintColor.white,
-        // );
-        // try {
-        //   result = await Process.run(
-        //     'fastboot',
-        //     [
-        //       'flash',
-        //       'recovery',
-        //       recPath,
-        //     ],
-        //     runInShell: true,
-        //     environment: <String, String>{
-        //       'Path': 'D:\\SDK\\Android\\platform-tools',
-        //     },
-        //     // includeParentEnvironment: true,
-        //   );
-        // } catch (e) {
-        //   print('asdasdasd====>$e');
-        // }
-        // print(result.stdout);
-        // print(result.stderr);
-
+        final Map<String, String> envir = Map.from(Platform.environment);
+        if (Platform.isWindows) {
+          envir['PATH'] += ';${Config.binPah}';
+        }
         ProcessResult result;
         try {
           result = await Process.run(
@@ -71,9 +50,7 @@ class _FastbootFuncState extends State<FastbootFunc> {
               'reboot',
             ],
             runInShell: true,
-            environment: <String, String>{
-              'Path': 'D:\\SDK\\Android\\platform-tools',
-            },
+            environment: envir,
             // includeParentEnvironment: true,
           );
         } catch (e) {

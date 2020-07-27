@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flash_tool/config/config.dart';
 import 'package:flash_tool/provider/devices_state.dart';
 import 'package:flash_tool/utils/device_utils.dart';
 import 'package:flash_tool/utils/show_toast.dart';
@@ -33,8 +34,9 @@ class _DevicesListState extends State<DevicesList> {
   Future<void> checkAdb() async {
     final Map<String, String> envir = Map.from(Platform.environment);
     if (Platform.isWindows) {
-      envir['PATH'] += ';D:\\SDK\\Android\\platform-tools';
+      envir['PATH'] += ';${Config.binPah}';
     }
+    print(envir['PATH']);
     while (mounted) {
       await Future<void>.delayed(const Duration(milliseconds: 1000));
       if (devicesState.lock) {

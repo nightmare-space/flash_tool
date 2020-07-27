@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flash_tool/config/toolkit_colors.dart';
 import 'package:flash_tool/pages/flash_other_partition.dart';
 import 'package:flash_tool/provider/devices_state.dart';

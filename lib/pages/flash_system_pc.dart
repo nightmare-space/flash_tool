@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'dart:io';
 
 import 'package:file_chooser/file_chooser.dart';
+import 'package:flash_tool/config/config.dart';
 import 'package:flash_tool/config/toolkit_colors.dart';
 import 'package:flash_tool/provider/devices_state.dart';
 import 'package:flash_tool/themes/text_colors.dart';
@@ -221,10 +222,8 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
             // return;
             devicesState.setLock();
             final Map<String, String> envir = Map.from(Platform.environment);
-            // print(envir);
-            print(envir['PATH']);
             if (Platform.isWindows) {
-              envir['PATH'] += ';D:\\SDK\\Android\\platform-tools';
+              envir['PATH'] += ';${Config.binPah}';
             }
             print(envir['PATH']);
             String batPath = '';

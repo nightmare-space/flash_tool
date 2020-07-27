@@ -28,7 +28,7 @@ class _CustomListState extends State<CustomList> {
   }
 
   Future<void> _onAfterRendering(Duration timeStamp) async {
-    // scrollController.jumpTo(scrollController.position.maxScrollExtent);
+    scrollController.jumpTo(scrollController.position.maxScrollExtent);
     // print('object');
   }
 

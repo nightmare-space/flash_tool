@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:io';
 import 'package:file_chooser/file_chooser.dart';
+import 'package:flash_tool/config/config.dart';
 import 'package:flash_tool/config/toolkit_colors.dart';
 import 'package:flash_tool/provider/devices_state.dart';
 import 'package:flash_tool/themes/text_colors.dart';
@@ -131,6 +132,10 @@ class _FlashRecoveryPCState extends State<FlashRecoveryPC> {
               termOut = '';
               setState(() {});
               devicesState.setLock();
+              final Map<String, String> envir = Map.from(Platform.environment);
+              if (Platform.isWindows) {
+                envir['PATH'] += ';${Config.binPah}';
+              }
               Process.start(
                 'fastboot',
                 [
@@ -141,9 +146,7 @@ class _FlashRecoveryPCState extends State<FlashRecoveryPC> {
                   recPath,
                 ],
                 runInShell: true,
-                environment: <String, String>{
-                  'Path': 'D:\\SDK\\Android\\platform-tools',
-                },
+                environment: envir,
               ).then((value) {
                 // value.stdout.transform(utf8.decoder).listen((String out) {
                 //   print('====>$out');
