@@ -1,8 +1,16 @@
+import 'dart:io';
+
 import 'package:flash_tool/flash_tool.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 void main() {
   runApp(MyApp());
+  if (Platform.isAndroid) {
+    SystemChrome.setSystemUIOverlayStyle(
+      const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
+    );
+  }
 }
 
 class MyApp extends StatelessWidget {
