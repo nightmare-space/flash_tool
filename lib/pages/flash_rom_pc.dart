@@ -50,8 +50,10 @@ class _FlashRomPCState extends State<FlashRomPC>
     return ChangeNotifierProvider<DevicesState>(
       create: (_) => DevicesState(),
       child: Theme(
-        data: ThemeData(
+        data: Theme.of(context).copyWith(
           accentColor: MToolkitColors.accentColor,
+          brightness: Brightness.light,
+          accentColorBrightness: Brightness.light,
         ),
         child: Scaffold(
           backgroundColor: Color(0xfffbfbfd),
