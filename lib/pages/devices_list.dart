@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flash_tool/provider/devices_state.dart';
 import 'package:flash_tool/utils/device_utils.dart';
+import 'package:flash_tool/utils/show_toast.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -30,11 +31,17 @@ class _DevicesListState extends State<DevicesList> {
   }
 
   Future<void> checkAdb() async {
+    Map<String, String> envir = Map.from(Platform.environment);
+    if (Platform.isWindows) {
+      envir['PATH'] += ';D:\\SDK\\Android\\platform-tools';
+    }
     while (mounted) {
       await Future<void>.delayed(const Duration(milliseconds: 1000));
       if (devicesState.lock) {
         continue;
       }
+
+      showToast(context: context, message: envir['PATH']);
       List<DeviceEntity> tmp = [];
       // devices.clear();
       ProcessResult result;
@@ -46,9 +53,7 @@ class _DevicesListState extends State<DevicesList> {
           ],
 
           runInShell: true,
-          environment: <String, String>{
-            'Path': 'D:\\SDK\\Android\\platform-tools',
-          },
+          environment: envir,
           // includeParentEnvironment: true,
         );
       } catch (e) {
@@ -69,9 +74,7 @@ class _DevicesListState extends State<DevicesList> {
                 'product',
               ],
               runInShell: true,
-              environment: <String, String>{
-                'Path': 'D:\\SDK\\Android\\platform-tools',
-              },
+              environment: envir,
               // includeParentEnvironment: true,
             );
           } catch (e) {
