@@ -29,7 +29,7 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
   String romPath = '';
   bool isFlashing = false;
   double flashProgress = 0.0;
-  //  命令得条数
+  //  命令的条数
   int cmdNumber = 0;
   Timer timer;
   int alreadyUseTime = 0;
@@ -42,6 +42,9 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
 
   @override
   Widget build(BuildContext context) {
+    // print(cmdNumber);
+    // final int curNum = RegExp('Finished').allMatches(termOut).length;
+    // print(curNum);
     final DevicesState devicesState = Provider.of(context);
     return Column(
       children: [
@@ -96,11 +99,14 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
               onTap: () async {
                 FileChooserResult fileChooserResult = await showOpenPanel(
                   allowedFileTypes: [
-                    FileTypeFilterGroup(label: shType, fileExtensions: [shType])
+                    // FileTypeFilterGroup(label: shType, fileExtensions: [shType])
                   ],
+                  canSelectDirectories: true,
                 );
-                romPath =
-                    FileSystemEntity.parentOf(fileChooserResult.paths.first);
+                if (fileChooserResult.canceled) {
+                  return;
+                }
+                romPath = fileChooserResult.paths.first;
                 setState(() {});
                 print(fileChooserResult.paths);
               },
@@ -127,6 +133,13 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
               ),
             ),
           ],
+        ),
+        Text(
+          '需要先解压线刷包，然后选择刷机脚本所在的目录，一般也是images这个文件夹所在的目录。',
+          style: TextStyle(
+            color: TextColors.fontColor,
+            fontWeight: FontWeight.bold,
+          ),
         ),
         Row(
           children: [
@@ -194,15 +207,20 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
         ),
         GestureDetector(
           onTap: () async {
+            if (isFlashing) {
+              return;
+            }
+            termOut = '';
+            setState(() {});
             isFlashing = true;
-            timer = Timer.periodic(Duration(seconds: 1), (timer) {
+            timer = Timer.periodic(const Duration(seconds: 1), (Timer timer) {
               alreadyUseTime = timer.tick;
               setState(() {});
             });
             setState(() {});
             // return;
             devicesState.setLock();
-            Map<String, String> envir = Map.from(Platform.environment);
+            final Map<String, String> envir = Map.from(Platform.environment);
             // print(envir);
             print(envir['PATH']);
             if (Platform.isWindows) {
@@ -227,31 +245,39 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
                     : '$romPath/flash_all_lock.sh';
                 break;
             }
-            cmdNumber =
-                File(batPath).readAsStringSync().trim().split('\n').length - 2;
+            // 读取设备信息两行是没有Finished标识的
+            cmdNumber = RegExp('fastboot')
+                    .allMatches(
+                      File(batPath).readAsStringSync(),
+                    )
+                    .length -
+                2;
             Process.start(
               batPath,
-              <String>[],
+              <String>[
+                '-s',
+                devicesState.curDevice,
+              ],
               runInShell: false,
               environment: envir,
-              mode: kReleaseMode
-                  ? ProcessStartMode.detachedWithStdio
-                  : ProcessStartMode.normal,
-            ).then((value) {
+              mode: ProcessStartMode.normal,
+            ).then((Process value) {
               value.stdout.transform(utf8.decoder).listen((String out) {
-                print('====>$out');
+                // print('====>$out');
                 setState(() {});
               });
               value.stderr.transform(utf8.decoder).listen((String out) {
                 termOut += out;
 
-                int curNum = RegExp('Finished').allMatches(termOut).length;
+                final int curNum =
+                    RegExp('Finished').allMatches(termOut).length;
 
                 flashProgress = curNum / cmdNumber;
                 if (out.contains('Rebooting')) {
                   devicesState.unLock();
                   isFlashing = false;
                   timer.cancel();
+                  setState(() {});
                 }
                 setState(() {});
                 print('====>$out');

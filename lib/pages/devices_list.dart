@@ -31,7 +31,7 @@ class _DevicesListState extends State<DevicesList> {
   }
 
   Future<void> checkAdb() async {
-    Map<String, String> envir = Map.from(Platform.environment);
+    final Map<String, String> envir = Map.from(Platform.environment);
     if (Platform.isWindows) {
       envir['PATH'] += ';D:\\SDK\\Android\\platform-tools';
     }
@@ -41,7 +41,7 @@ class _DevicesListState extends State<DevicesList> {
         continue;
       }
 
-      showToast(context: context, message: envir['PATH']);
+      // showToast(context: context, message: envir['PATH']);
       List<DeviceEntity> tmp = [];
       // devices.clear();
       ProcessResult result;

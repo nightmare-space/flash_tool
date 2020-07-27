@@ -4,9 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'package:flutter/material.dart';
 
-import 'flash_rom.dart';
-import 'pages/flash_rom_pc.dart';
 import 'package:print_color/print_color.dart';
+import 'pages/flash_rom_pc.dart';
 
 import 'themes/text_colors.dart';
 

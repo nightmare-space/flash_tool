@@ -1,4 +1,5 @@
 import 'package:flash_tool/config/toolkit_colors.dart';
+import 'package:flash_tool/pages/flash_other_partition.dart';
 import 'package:flash_tool/provider/devices_state.dart';
 import 'package:flash_tool/themes/text_colors.dart';
 import 'package:flutter/material.dart';
@@ -9,7 +10,7 @@ import 'devices_list.dart';
 import 'fastboot_func.dart';
 import 'flash_recovery_pc.dart';
 import 'flash_system_pc.dart';
-import 'platform_util.dart';
+import '../utils/platform_util.dart';
 
 class FlashRomPC extends StatefulWidget {
   @override
@@ -68,30 +69,30 @@ class _FlashRomPCState extends State<FlashRomPC>
                     Stack(
                       alignment: Alignment.center,
                       children: [
-                        Align(
-                          alignment: Alignment.centerLeft,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(25)),
-                            height: 36.w.toDouble(),
-                            width: 36.w.toDouble(),
-                            child: Material(
-                              color: Colors.white,
-                              child: InkWell(
-                                // highlightColor: C,
-                                borderRadius:
-                                    BorderRadius.circular(18.w.toDouble()),
-                                child: Icon(
-                                  Icons.arrow_back,
-                                  color: TextColors.fontColor,
-                                ),
-                                onTap: () {
-                                  Navigator.of(context).pop();
-                                },
-                              ),
-                            ),
-                          ),
-                        ),
+                        // Align(
+                        //   alignment: Alignment.centerLeft,
+                        //   child: Container(
+                        //     decoration: BoxDecoration(
+                        //         borderRadius: BorderRadius.circular(25)),
+                        //     height: 36.w.toDouble(),
+                        //     width: 36.w.toDouble(),
+                        //     child: Material(
+                        //       color: Colors.white,
+                        //       child: InkWell(
+                        //         // highlightColor: C,
+                        //         borderRadius:
+                        //             BorderRadius.circular(18.w.toDouble()),
+                        //         child: Icon(
+                        //           Icons.arrow_back,
+                        //           color: TextColors.fontColor,
+                        //         ),
+                        //         onTap: () {
+                        //           Navigator.of(context).pop();
+                        //         },
+                        //       ),
+                        //     ),
+                        //   ),
+                        // ),
                         SizedBox(
                           height: 100.w.toDouble(),
                           child: Center(
@@ -150,7 +151,7 @@ class _FlashRomPCState extends State<FlashRomPC>
                   child: [
                     FlashSystemPc(),
                     FlashRecoveryPC(),
-                    FlashRecoveryPC(),
+                    FlashOtherPartition(),
                     FastbootFunc(),
                   ][pageIndex],
                 ),

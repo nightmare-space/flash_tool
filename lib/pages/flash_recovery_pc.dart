@@ -86,11 +86,18 @@ class _FlashRecoveryPCState extends State<FlashRecoveryPC> {
               ),
               GestureDetector(
                 onTap: () async {
-                  FileChooserResult fileChooserResult = await showOpenPanel(
-                    allowedFileTypes: [
-                      FileTypeFilterGroup(label: 'img', fileExtensions: ['img'])
+                  final FileChooserResult fileChooserResult =
+                      await showOpenPanel(
+                    allowedFileTypes: <FileTypeFilterGroup>[
+                      const FileTypeFilterGroup(
+                        label: 'img',
+                        fileExtensions: <String>['img'],
+                      ),
                     ],
                   );
+                  if (fileChooserResult.canceled) {
+                    return;
+                  }
                   recPath = fileChooserResult.paths.first;
                   setState(() {});
                   print(fileChooserResult.paths);
@@ -121,11 +128,14 @@ class _FlashRecoveryPCState extends State<FlashRecoveryPC> {
           ),
           GestureDetector(
             onTap: () async {
+              termOut = '';
+              setState(() {});
               devicesState.setLock();
               Process.start(
                 'fastboot',
                 [
-                  '-v',
+                  '-s',
+                  devicesState.curDevice,
                   'flash',
                   'recovery',
                   recPath,
