@@ -1,2 +1,6 @@
 open /Users/nightmare/Desktop/nightmare-space/flash_tool/example/build/macos/Build/Products/Release/example.app
 kill -9 $(ps -p $(ps -p $PPID -o ppid=) -o ppid=) 
+
+set http_proxy="http://127.0.0.1:1080"
+set https_proxy="http://127.0.0.1:1080"
+set http_proxy="http://127.0.0.1:1080"
