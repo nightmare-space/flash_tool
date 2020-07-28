@@ -106,9 +106,9 @@ class _FlashDrawerState extends State<FlashDrawer>
           Container(
             height: 48.w.toDouble(),
             width: pageIndex == index
-                ? (MediaQuery.of(context).size.width / 5 - 40.w.toDouble()) *
+                ? (MediaQuery.of(context).size.width - 40.w.toDouble()) *
                     controller.value
-                : MediaQuery.of(context).size.width / 5 - 40.w.toDouble(),
+                : MediaQuery.of(context).size.width - 40.w.toDouble(),
             decoration: pageIndex == index
                 ? BoxDecoration(
                     color: Color(0xfff1effa),

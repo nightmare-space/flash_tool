@@ -3,11 +3,39 @@ import 'dart:ui';
 
 import 'package:flash_tool/flash_tool.dart';
 import 'package:flash_tool/pages/devices_list.dart';
+import 'package:flash_tool/provider/devices_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 import 'package:provider/provider.dart';
 
 import 'drawer_notifier.dart';
+
+class FlashRomMobile extends StatefulWidget {
+  @override
+  _FlashRomMobileState createState() => _FlashRomMobileState();
+}
+
+class _FlashRomMobileState extends State<FlashRomMobile> {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      home: MultiProvider(
+        providers: [
+          ChangeNotifierProvider<DrawerNotifier>(
+            create: (_) => DrawerNotifier(),
+          ),
+          ChangeNotifierProvider<DevicesState>(
+            create: (_) => DevicesState(),
+          ),
+        ],
+        child: Material(
+          color: Colors.white,
+          child: HomePage(),
+        ),
+      ),
+    );
+  }
+}
 
 class HomePage extends StatefulWidget {
   @override
@@ -47,16 +75,23 @@ class _HomePageState extends State<HomePage>
               viewModel.scale,
           builder: (BuildContext context, double progress, Widget child) {
             return Transform(
-              alignment: Alignment.centerRight,
-              transform: Matrix4.identity()..scale(0.8 + drawerNotifier.scale),
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width * 3 / 4,
-                height: MediaQuery.of(context).size.height,
-                child: Material(
-                  child: FlashDrawer(),
-                ),
-              ),
-            );
+                alignment: Alignment.centerRight,
+                transform: Matrix4.identity()
+                  ..scale(0.8 + drawerNotifier.scale),
+                child: MediaQuery(
+                  data: MediaQueryData(
+                      size: Size(
+                    MediaQuery.of(context).size.width * 3 / 4,
+                    MediaQuery.of(context).size.height,
+                  )),
+                  child: SizedBox(
+                    width: MediaQuery.of(context).size.width * 3 / 4,
+                    height: MediaQuery.of(context).size.height,
+                    child: Material(
+                      child: FlashDrawer(),
+                    ),
+                  ),
+                ));
           },
         ),
         // 为了能让Drawer销毁
@@ -106,9 +141,7 @@ class _HomePageState extends State<HomePage>
                 // height: co.maxHeight,
                 width: MediaQuery.of(context).size.width,
                 child: ClipRRect(
-                  borderRadius: BorderRadius.circular(
-                    drawerNotifier.scale * 1 / 0.2 * borderRadius,
-                  ),
+                  borderRadius: BorderRadius.circular(borderRadius),
                   child: Stack(
                     children: <Widget>[
                       Navigator(

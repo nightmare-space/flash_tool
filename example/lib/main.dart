@@ -1,13 +1,11 @@
 import 'dart:io';
+import 'dart:typed_data';
 
-import 'package:example/drawer_notifier.dart';
 import 'package:flash_tool/flash_tool.dart';
 import 'package:flash_tool/provider/devices_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
-
-import 'home_page.dart';
 
 void main() {
   runApp(MyApp());
@@ -15,7 +13,17 @@ void main() {
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
     );
+    installAdb();
   }
+}
+
+Future<void> installAdb() async {
+  final ByteData byteData = await rootBundle.load('assets/android/fastboot');
+  final Uint8List picBytes =
+      byteData.buffer.asUint8List(); //以上两行是从apk内assets文件夹讲文件转换为Uint8List的轮子
+  String fastPath = '/data/data/com.example.example/files/fastboot';
+  await File(fastPath).writeAsBytes(picBytes);
+  Process.runSync('chmod', ['+x', fastPath]);
 }
 
 class MyApp extends StatelessWidget {
@@ -30,15 +38,8 @@ class MyApp extends StatelessWidget {
       ),
       // home: WinTerm(),
       home: MultiProvider(
-        providers: [
-          ChangeNotifierProvider<DrawerNotifier>(
-            create: (_) => DrawerNotifier(),
-          ),
-          ChangeNotifierProvider<DevicesState>(
-            create: (_) => DevicesState(),
-          ),
-        ],
-        child: HomePage(),
+        providers: [],
+        child: FlashRomMobile(),
       ),
     );
   }
