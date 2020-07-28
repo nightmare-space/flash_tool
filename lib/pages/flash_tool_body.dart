@@ -11,63 +11,55 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
 import 'devices_list.dart';
+import 'drawer.dart';
 import 'fastboot_func.dart';
 import 'flash_recovery_pc.dart';
 import 'flash_system_pc.dart';
 import '../utils/platform_util.dart';
 
-class FlashRomPC extends StatefulWidget {
+class FlashToolBody extends StatefulWidget {
+  const FlashToolBody({Key key, this.pageIndex = 0}) : super(key: key);
+  final int pageIndex;
+
   @override
-  _FlashRomPCState createState() => _FlashRomPCState();
+  _FlashToolBodyState createState() => _FlashToolBodyState();
 }
 
-class _FlashRomPCState extends State<FlashRomPC>
+class _FlashToolBodyState extends State<FlashToolBody>
     with SingleTickerProviderStateMixin {
-  int pageIndex = 0;
   @override
   Widget build(BuildContext context) {
-    if (PlatformUtil.isDesktop()) {
-      ScreenUtil.init(context,
-          width: MediaQuery.of(context).size.width,
-          height: MediaQuery.of(context).size.height,
-          allowFontScaling: false);
-    } else {
-      ScreenUtil.init(context,
-          width: 414, height: 896, allowFontScaling: false);
-    }
     return ChangeNotifierProvider<DevicesState>(
       create: (_) => DevicesState(),
       child: Theme(
         data: Theme.of(context).copyWith(
           accentColor: MToolkitColors.accentColor,
-          appBarTheme: AppBarTheme(
+          appBarTheme: const AppBarTheme(
             color: Color(0xfffbfbfd),
           ),
         ),
         child: AnnotatedRegion<SystemUiOverlayStyle>(
           value: SystemUiOverlayStyle.dark,
           child: Material(
-            color: Color(0xfffbfbfd),
+            color: const Color(0xfffbfbfd),
             child: SafeArea(
               child: Row(
                 children: [
-                  SizedBox(
-                    width: PlatformUtil.isDesktop()
-                        ? MediaQuery.of(context).size.width * 4 / 5
-                        : MediaQuery.of(context).size.width,
-                    child: MediaQuery(
-                      data: MediaQueryData(
-                        size: Size(
-                          MediaQuery.of(context).size.width * 4 / 5,
-                          MediaQuery.of(context).size.height,
-                        ),
+                  MediaQuery(
+                    data: MediaQueryData(
+                      size: Size(
+                        MediaQuery.of(context).size.width,
+                        MediaQuery.of(context).size.height,
                       ),
+                    ),
+                    child: SizedBox(
+                      width: MediaQuery.of(context).size.width,
                       child: [
                         FlashSystemPc(),
                         FlashRecoveryPC(),
                         FlashOtherPartition(),
                         FastbootFunc(),
-                      ][pageIndex],
+                      ][widget.pageIndex],
                     ),
                   )
                 ],

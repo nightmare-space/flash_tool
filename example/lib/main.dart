@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
       // home: WinTerm(),
       home: MultiProvider(
         providers: [],
-        child: FlashRomMobile(),
+        child: FlashTool(),
       ),
     );
   }

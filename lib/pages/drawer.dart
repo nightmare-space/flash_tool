@@ -5,7 +5,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 import 'devices_list.dart';
 
+typedef DrawerCallBack = void Function(int index);
+
 class FlashDrawer extends StatefulWidget {
+  const FlashDrawer({Key key, this.onChange}) : super(key: key);
+  final DrawerCallBack onChange;
+
   @override
   _FlashDrawerState createState() => _FlashDrawerState();
 }
@@ -20,8 +25,8 @@ class _FlashDrawerState extends State<FlashDrawer>
     super.initState();
     controller = AnimationController(
       vsync: this,
-      duration: Duration(
-        milliseconds: 300,
+      duration: const Duration(
+        milliseconds: 400,
       ),
     );
     controller.addListener(() {
@@ -33,9 +38,9 @@ class _FlashDrawerState extends State<FlashDrawer>
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width / 5,
+      width: MediaQuery.of(context).size.width,
       height: MediaQuery.of(context).size.height,
-      decoration: BoxDecoration(
+      decoration: const BoxDecoration(
         color: Colors.white,
       ),
       child: Column(
@@ -95,6 +100,7 @@ class _FlashDrawerState extends State<FlashDrawer>
   Widget getNavItem({String title, int index, Widget prefix}) {
     return GestureDetector(
       onTap: () {
+        widget.onChange?.call(index);
         pageIndex = index;
         setState(() {});
         controller.reset();

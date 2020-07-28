@@ -33,7 +33,7 @@ class _FlashRecoveryPCState extends State<FlashRecoveryPC> {
         elevation: 0.0,
         centerTitle: true,
         title: Text(
-          '刷写Rec====>${devicesState.curDevice}',
+          '刷写Rec${devicesState.curDevice}',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: TextColors.fontColor,

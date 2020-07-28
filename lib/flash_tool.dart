@@ -1,5 +1,6 @@
 library flash_tool;
 
-export 'pages/flash_rom_pc.dart';
 export 'pages/drawer.dart';
-export 'pages/home_page.dart';
+export 'pages/flash_tool.dart';
+export 'pages/flash_tool_body.dart';
+export 'pages/flash_tool_mobile.dart';

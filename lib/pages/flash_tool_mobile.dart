@@ -8,14 +8,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
 import 'package:provider/provider.dart';
 
-import 'drawer_notifier.dart';
+import '../provider/drawer_notifier.dart';
 
-class FlashRomMobile extends StatefulWidget {
+class FlashToolMobile extends StatefulWidget {
   @override
-  _FlashRomMobileState createState() => _FlashRomMobileState();
+  _FlashToolMobileState createState() => _FlashToolMobileState();
 }
 
-class _FlashRomMobileState extends State<FlashRomMobile> {
+class _FlashToolMobileState extends State<FlashToolMobile> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -75,23 +75,23 @@ class _HomePageState extends State<HomePage>
               viewModel.scale,
           builder: (BuildContext context, double progress, Widget child) {
             return Transform(
-                alignment: Alignment.centerRight,
-                transform: Matrix4.identity()
-                  ..scale(0.8 + drawerNotifier.scale),
-                child: MediaQuery(
-                  data: MediaQueryData(
-                      size: Size(
-                    MediaQuery.of(context).size.width * 3 / 4,
-                    MediaQuery.of(context).size.height,
-                  )),
-                  child: SizedBox(
-                    width: MediaQuery.of(context).size.width * 3 / 4,
-                    height: MediaQuery.of(context).size.height,
-                    child: Material(
-                      child: FlashDrawer(),
-                    ),
+              alignment: Alignment.centerRight,
+              transform: Matrix4.identity()..scale(0.8 + drawerNotifier.scale),
+              child: MediaQuery(
+                data: MediaQueryData(
+                    size: Size(
+                  MediaQuery.of(context).size.width * 3 / 4,
+                  MediaQuery.of(context).size.height,
+                )),
+                child: SizedBox(
+                  width: MediaQuery.of(context).size.width * 3 / 4,
+                  height: MediaQuery.of(context).size.height,
+                  child: Material(
+                    child: FlashDrawer(),
                   ),
-                ));
+                ),
+              ),
+            );
           },
         ),
         // 为了能让Drawer销毁
@@ -147,7 +147,7 @@ class _HomePageState extends State<HomePage>
                       Navigator(
                         initialRoute: '/',
                         onGenerateRoute: (RouteSettings settings) {
-                          final Widget child = FlashRomPC();
+                          final Widget child = FlashToolBody();
                           return MaterialPageRoute<void>(builder: (c) {
                             return child;
                           });

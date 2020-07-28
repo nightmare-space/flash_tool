@@ -7,6 +7,7 @@ import 'package:flash_tool/config/config.dart';
 import 'package:flash_tool/config/toolkit_colors.dart';
 import 'package:flash_tool/provider/devices_state.dart';
 import 'package:flash_tool/themes/text_colors.dart';
+import 'package:flash_tool/utils/platform_util.dart';
 import 'package:flash_tool/widgets/custom_list.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -46,6 +47,7 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
     // print(cmdNumber);
     // final int curNum = RegExp('Finished').allMatches(termOut).length;
     // print(curNum);
+
     final DevicesState devicesState = Provider.of(context);
     return Scaffold(
       // primary: false,
@@ -55,7 +57,7 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
         elevation: 0.0,
         centerTitle: true,
         title: Text(
-          '刷写Rec====>${devicesState.curDevice}',
+          '刷写Rom${devicesState.curDevice}',
           style: TextStyle(
             fontWeight: FontWeight.bold,
             color: TextColors.fontColor,
@@ -85,6 +87,7 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
             ],
           ),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Container(
                 margin: EdgeInsets.all(16.w.toDouble()),
@@ -101,7 +104,7 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
                   ),
                   child: Center(
                     child: Text(
-                      '$romPath',
+                      romPath,
                       style: TextStyle(
                         fontSize: 18.w.toDouble(),
                         fontWeight: FontWeight.bold,
@@ -111,44 +114,46 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
                   ),
                 ),
               ),
-              GestureDetector(
-                onTap: () async {
-                  FileChooserResult fileChooserResult = await showOpenPanel(
-                    allowedFileTypes: [
-                      // FileTypeFilterGroup(label: shType, fileExtensions: [shType])
-                    ],
-                    canSelectDirectories: true,
-                  );
-                  if (fileChooserResult.canceled) {
-                    return;
-                  }
-                  romPath = fileChooserResult.paths.first;
-                  setState(() {});
-                  print(fileChooserResult.paths);
-                },
-                child: Container(
-                  margin: EdgeInsets.all(16.w.toDouble()),
-                  decoration: BoxDecoration(
-                    color: MToolkitColors.candyColor[1],
-                    borderRadius: BorderRadius.circular(
-                      12.w.toDouble(),
-                    ),
-                  ),
-                  width: MediaQuery.of(context).size.width / 8,
-                  height: 64.w.toDouble(),
-                  child: Center(
-                    child: Text(
-                      '选择',
-                      style: TextStyle(
-                        fontSize: 20.w.toDouble(),
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
+            ],
+          ),
+          GestureDetector(
+            onTap: () async {
+              FileChooserResult fileChooserResult = await showOpenPanel(
+                allowedFileTypes: [
+                  // FileTypeFilterGroup(label: shType, fileExtensions: [shType])
+                ],
+                canSelectDirectories: true,
+              );
+              if (fileChooserResult.canceled) {
+                return;
+              }
+              romPath = fileChooserResult.paths.first;
+              setState(() {});
+              print(fileChooserResult.paths);
+            },
+            child: Container(
+              margin: EdgeInsets.only(
+                bottom: 16.w.toDouble(),
+              ),
+              decoration: BoxDecoration(
+                color: MToolkitColors.candyColor[1],
+                borderRadius: BorderRadius.circular(
+                  24.w.toDouble(),
+                ),
+              ),
+              height: 48.w.toDouble(),
+              width: 200.w.toDouble(),
+              child: Center(
+                child: Text(
+                  '选择',
+                  style: TextStyle(
+                    fontSize: 20.w.toDouble(),
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
               ),
-            ],
+            ),
           ),
           Text(
             '需要先解压线刷包，然后选择刷机脚本所在的目录，一般也是images这个文件夹所在的目录。',
@@ -178,59 +183,82 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
             ],
           ),
           Wrap(
+            spacing: 100.w.toDouble(),
             children: [
-              Row(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Radio<FlashMode>(
-                    value: FlashMode.deleteAll,
-                    groupValue: _flashMode,
-                    onChanged: changeFlashMode,
-                  ),
-                  Text(
-                    '全部删除',
-                    style: TextStyle(
-                      fontSize: 18.w.toDouble(),
-                      fontWeight: FontWeight.bold,
-                      color: TextColors.fontColor,
+              SizedBox(
+                width: 200.w.toDouble(),
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    Radio<FlashMode>(
+                      value: FlashMode.deleteAll,
+                      groupValue: _flashMode,
+                      onChanged: changeFlashMode,
                     ),
-                  ),
-                ],
-              ),
-              Row(
-                children: [
-                  Radio<FlashMode>(
-                    value: FlashMode.saveUserData,
-                    groupValue: _flashMode,
-                    onChanged: changeFlashMode,
-                  ),
-                  Text(
-                    '保留用户数据',
-                    style: TextStyle(
-                      fontSize: 18.w.toDouble(),
-                      fontWeight: FontWeight.bold,
-                      color: TextColors.fontColor,
+                    Text(
+                      '全部删除',
+                      style: TextStyle(
+                        fontSize: 18.w.toDouble(),
+                        fontWeight: FontWeight.bold,
+                        color: TextColors.fontColor,
+                      ),
                     ),
-                  ),
-                ],
+                  ],
+                ),
               ),
-              Row(
-                children: [
-                  Radio<FlashMode>(
-                    value: FlashMode.deleteAllAndLock,
-                    groupValue: _flashMode,
-                    onChanged: changeFlashMode,
-                  ),
-                  Text(
-                    '全部删除并lock',
-                    style: TextStyle(
-                      fontSize: 18.w.toDouble(),
-                      fontWeight: FontWeight.bold,
-                      color: TextColors.fontColor,
+              SizedBox(
+                width: 200.w.toDouble(),
+                child: Row(
+                  children: [
+                    Radio<FlashMode>(
+                      value: FlashMode.saveUserData,
+                      groupValue: _flashMode,
+                      onChanged: changeFlashMode,
                     ),
-                  ),
-                ],
+                    Text(
+                      '保留用户数据',
+                      style: TextStyle(
+                        fontSize: 18.w.toDouble(),
+                        fontWeight: FontWeight.bold,
+                        color: TextColors.fontColor,
+                      ),
+                    ),
+                  ],
+                ),
               ),
+              SizedBox(
+                width: 200.w.toDouble(),
+                child: Row(
+                  children: [
+                    Radio<FlashMode>(
+                      value: FlashMode.deleteAllAndLock,
+                      groupValue: _flashMode,
+                      onChanged: changeFlashMode,
+                    ),
+                    Text(
+                      '全部删除并lock',
+                      style: TextStyle(
+                        fontSize: 18.w.toDouble(),
+                        fontWeight: FontWeight.bold,
+                        color: TextColors.fontColor,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Row(
+            children: [
+              Text(
+                '开启缓存（避免存在刷写失败的问题）',
+                style: TextStyle(
+                  fontSize: 18.w.toDouble(),
+                  fontWeight: FontWeight.bold,
+                  color: TextColors.fontColor,
+                ),
+              ),
+              Switch(value: false, onChanged: (bool v) {})
             ],
           ),
           GestureDetector(
@@ -362,17 +390,18 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
               ),
             ),
           ),
-          Container(
-            decoration: BoxDecoration(
-              color: Color(0xFFF0F1F3),
-              borderRadius: BorderRadius.circular(
-                12.w.toDouble(),
-              ),
-            ),
-            width: MediaQuery.of(context).size.width,
-            height: 240.w.toDouble(),
-            child: Padding(
+          Padding(
+            padding: EdgeInsets.all(16.w.toDouble()),
+            child: Container(
               padding: EdgeInsets.all(8.w.toDouble()),
+              decoration: BoxDecoration(
+                color: Color(0xFFF0F1F3),
+                borderRadius: BorderRadius.circular(
+                  12.w.toDouble(),
+                ),
+              ),
+              width: MediaQuery.of(context).size.width,
+              height: 240.w.toDouble(),
               child: Scrollbar(
                 child: CustomList(
                   child: Text(
