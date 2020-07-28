@@ -26,7 +26,7 @@ class _FlashDrawerState extends State<FlashDrawer>
     controller = AnimationController(
       vsync: this,
       duration: const Duration(
-        milliseconds: 400,
+        milliseconds: 300,
       ),
     );
     controller.addListener(() {

@@ -1,5 +1,5 @@
 import 'package:flash_tool/flash_tool.dart';
-import 'package:flash_tool/pages/flash_system_pc.dart';
+import 'package:flash_tool/pages/flash_system_page.dart';
 import 'package:flash_tool/provider/devices_state.dart';
 import 'package:flash_tool/utils/platform_util.dart';
 import 'package:flutter/material.dart';
@@ -8,11 +8,14 @@ import 'package:provider/provider.dart';
 
 import 'flash_tool_desktop.dart';
 
+// 主要的widget
+// 会自动判断平台
+// 返回执行的页面
 class FlashTool extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-      providers: [
+      providers: <SingleChildCloneableWidget>[
         ChangeNotifierProvider<DevicesState>(
           create: (_) => DevicesState(),
         ),

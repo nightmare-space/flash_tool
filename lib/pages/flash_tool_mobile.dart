@@ -1,4 +1,5 @@
 import 'dart:io';
+import 'dart:math';
 import 'dart:ui';
 
 import 'package:flash_tool/flash_tool.dart';
@@ -6,6 +7,7 @@ import 'package:flash_tool/pages/devices_list.dart';
 import 'package:flash_tool/provider/devices_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
+import 'package:print_color/print_color.dart';
 import 'package:provider/provider.dart';
 
 import '../provider/drawer_notifier.dart';
@@ -44,6 +46,7 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage>
     with SingleTickerProviderStateMixin {
+  int pageIndex = 0;
   @override
   void initState() {
     super.initState();
@@ -79,15 +82,27 @@ class _HomePageState extends State<HomePage>
               transform: Matrix4.identity()..scale(0.8 + drawerNotifier.scale),
               child: MediaQuery(
                 data: MediaQueryData(
-                    size: Size(
-                  MediaQuery.of(context).size.width * 3 / 4,
-                  MediaQuery.of(context).size.height,
-                )),
+                  size: Size(
+                    MediaQuery.of(context).size.width * 3 / 4,
+                    MediaQuery.of(context).size.height,
+                  ),
+                ),
                 child: SizedBox(
                   width: MediaQuery.of(context).size.width * 3 / 4,
                   height: MediaQuery.of(context).size.height,
                   child: Material(
-                    child: FlashDrawer(),
+                    child: FlashDrawer(
+                      onChange: (int index) {
+                        pageIndex = index;
+                        setState(() {});
+                        drawerNotifier.closeDrawer();
+                        debugPrintWithColor(
+                          '侧栏改变了页面=========$index',
+                          fontColor: PrintColor.red,
+                          backgroundColor: PrintColor.white,
+                        );
+                      },
+                    ),
                   ),
                 ),
               ),
@@ -114,7 +129,7 @@ class _HomePageState extends State<HomePage>
                   color: Colors.white,
                   borderRadius: BorderRadius.circular(30.0),
                   boxShadow: <BoxShadow>[
-                    if (drawerNotifier.scale > 0) ...<BoxShadow>[
+                    ...<BoxShadow>[
                       BoxShadow(
                           color: Colors.black.withAlpha(70),
                           blurRadius: 20.0,
@@ -144,14 +159,8 @@ class _HomePageState extends State<HomePage>
                   borderRadius: BorderRadius.circular(borderRadius),
                   child: Stack(
                     children: <Widget>[
-                      Navigator(
-                        initialRoute: '/',
-                        onGenerateRoute: (RouteSettings settings) {
-                          final Widget child = FlashToolBody();
-                          return MaterialPageRoute<void>(builder: (c) {
-                            return child;
-                          });
-                        },
+                      FlashToolBody(
+                        pageIndex: pageIndex,
                       ),
                       if (drawerNotifier.isOpen)
                         Material(
@@ -274,9 +283,6 @@ class _HomePageState extends State<HomePage>
     );
   }
 }
-
-BouncingScrollPhysics a;
-ClampingScrollPhysics b;
 
 class PagingScrollPhysics extends ScrollPhysics {
   const PagingScrollPhysics(

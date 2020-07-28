@@ -12,7 +12,7 @@ class _FlashToolDesktopState extends State<FlashToolDesktop> {
   Widget build(BuildContext context) {
     return Material(
       child: Row(
-        children: [
+        children: <Widget>[
           MediaQuery(
             data: MediaQueryData(
               size: Size(

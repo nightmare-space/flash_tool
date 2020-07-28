@@ -13,8 +13,8 @@ import 'package:provider/provider.dart';
 import 'devices_list.dart';
 import 'drawer.dart';
 import 'fastboot_func.dart';
-import 'flash_recovery_pc.dart';
-import 'flash_system_pc.dart';
+import 'flash_recovery_page.dart';
+import 'flash_system_page.dart';
 import '../utils/platform_util.dart';
 
 class FlashToolBody extends StatefulWidget {
