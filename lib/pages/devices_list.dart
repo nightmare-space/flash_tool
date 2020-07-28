@@ -36,6 +36,7 @@ class _DevicesListState extends State<DevicesList> {
     if (Platform.isWindows) {
       envir['PATH'] += ';${Config.binPah}';
     }
+    print('asdasd');
     print(envir['PATH']);
     while (mounted) {
       await Future<void>.delayed(const Duration(milliseconds: 1000));
