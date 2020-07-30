@@ -91,6 +91,7 @@ class _HomePageState extends State<HomePage>
                     child: FlashDrawer(
                       onChange: (int index) {
                         pageIndex = index;
+                        drawerNotifier.changeIndex(index);
                         setState(() {});
                         drawerNotifier.closeDrawer();
                         debugPrintWithColor(

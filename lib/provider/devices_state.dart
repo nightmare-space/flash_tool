@@ -5,13 +5,19 @@ import 'package:flash_tool/pages/devices_list.dart';
 import 'package:flash_tool/utils/device_utils.dart';
 import 'package:flash_tool/utils/platform_util.dart';
 import 'package:flash_tool/utils/process.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:print_color/print_color.dart';
+import 'package:provider/provider.dart';
 
 class DevicesState extends ChangeNotifier {
   DevicesState() {
     checkAdb();
   }
+  static DevicesState of(BuildContext context) {
+    return Provider.of<DevicesState>(context);
+  }
+
   int deviceIndex = 0;
   List<DeviceEntity> devices = <DeviceEntity>[];
   String curDevice = '';

@@ -7,8 +7,11 @@ import 'package:flash_tool/config/config.dart';
 import 'package:flash_tool/config/toolkit_colors.dart';
 import 'package:flash_tool/provider/devices_state.dart';
 import 'package:flash_tool/themes/text_colors.dart';
+import 'package:flash_tool/utils/platform_util.dart';
+import 'package:flash_tool/utils/process.dart';
 import 'package:flash_tool/widgets/custom_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
@@ -56,7 +59,10 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
           elevation: 0.0,
           centerTitle: true,
           title: Text(
-            '刷写Rom(${devicesState.curDevice})',
+            '刷写Rom' +
+                (devicesState.curDevice.isNotEmpty
+                    ? '(${devicesState.curDevice})'
+                    : ''),
             style: const TextStyle(
               fontWeight: FontWeight.bold,
               color: TextColors.fontColor,
@@ -118,6 +124,16 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
               ),
               GestureDetector(
                 onTap: () async {
+                  if (PlatformUtil.isMobilePhone()) {
+                    ClipboardData data =
+                        await Clipboard.getData(Clipboard.kTextPlain);
+                    print('''''object''' '');
+                    print(data.text);
+
+                    romPath = data.text;
+                    setState(() {});
+                    return;
+                  }
                   final FileChooserResult fileChooserResult =
                       await showOpenPanel(
                     allowedFileTypes: <FileTypeFilterGroup>[
@@ -146,7 +162,8 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
                   width: 200.w.toDouble(),
                   child: Center(
                     child: Text(
-                      '选择',
+                      //
+                      PlatformUtil.isDesktop() ? '选择' : '粘贴路径',
                       style: TextStyle(
                         fontSize: 20.w.toDouble(),
                         fontWeight: FontWeight.bold,
@@ -287,6 +304,8 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
                       Map<String, String>.from(Platform.environment);
                   if (Platform.isWindows) {
                     envir['PATH'] += ';${Config.binPah}';
+                  } else if (Platform.isAndroid) {
+                    envir['PATH'] += ':/data/data/com.example.example/files';
                   }
                   print(envir['PATH']);
                   String batPath = '';
@@ -314,21 +333,50 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
                           )
                           .length -
                       2;
-                  Process.start(
-                    batPath,
-                    <String>[
-                      '-s',
-                      devicesState.curDevice,
-                    ],
-                    runInShell: false,
-                    environment: envir,
-                    mode: ProcessStartMode.normal,
-                  ).then((Process value) {
-                    value.stdout.transform(utf8.decoder).listen((String out) {
-                      // print('====>$out');
-                      setState(() {});
-                    });
-                    value.stderr.transform(utf8.decoder).listen((String out) {
+                  if (PlatformUtil.isDesktop()) {
+                    try {
+                      Process.start(
+                        batPath,
+                        <String>[
+                          '-s',
+                          devicesState.curDevice,
+                        ],
+                        runInShell: false,
+                        environment: envir,
+                        mode: ProcessStartMode.normal,
+                      ).then((Process value) {
+                        value.stdout
+                            .transform(utf8.decoder)
+                            .listen((String out) {
+                          // print('====>$out');
+                          setState(() {});
+                        });
+                        value.stderr
+                            .transform(utf8.decoder)
+                            .listen((String out) {
+                          termOut += out;
+
+                          final int curNum =
+                              RegExp('Finished').allMatches(termOut).length;
+
+                          flashProgress = curNum / cmdNumber;
+                          if (out.contains('Rebooting')) {
+                            devicesState.unLock();
+                            isFlashing = false;
+                            timer.cancel();
+                            setState(() {});
+                          }
+                          setState(() {});
+                          print('====>$out');
+                        });
+                      });
+                    } catch (e) {
+                      // print('asdasdasd====>$e');
+                    }
+                  } else {
+                    CustomProcess.exec(
+                        'sh $batPath -s ${devicesState.curDevice} 2>&1',
+                        callback: (out) {
                       termOut += out;
 
                       final int curNum =
@@ -344,7 +392,7 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
                       setState(() {});
                       print('====>$out');
                     });
-                  });
+                  }
                 },
                 child: Container(
                   margin: EdgeInsets.all(8.w.toDouble()),
@@ -383,7 +431,7 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
                           ),
                           if (isFlashing)
                             Align(
-                              alignment: const Alignment(0.5, 0),
+                              alignment: const Alignment(0.7, 0),
                               child: Text(
                                 '$alreadyUseTime\s',
                                 style: TextStyle(

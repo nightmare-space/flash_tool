@@ -1,7 +1,10 @@
+import 'package:flash_tool/provider/devices_state.dart';
+import 'package:flash_tool/provider/drawer_notifier.dart';
 import 'package:flash_tool/themes/text_colors.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:provider/provider.dart';
 
 import 'devices_list.dart';
 
@@ -18,7 +21,6 @@ class FlashDrawer extends StatefulWidget {
 class _FlashDrawerState extends State<FlashDrawer>
     with SingleTickerProviderStateMixin {
   AnimationController controller;
-  int pageIndex = 0;
 
   @override
   void initState() {
@@ -98,10 +100,11 @@ class _FlashDrawerState extends State<FlashDrawer>
   }
 
   Widget getNavItem({String title, int index, Widget prefix}) {
+    final DrawerNotifier drawerNotifier = Provider.of<DrawerNotifier>(context);
     return GestureDetector(
       onTap: () {
         widget.onChange?.call(index);
-        pageIndex = index;
+        // pageIndex = index;
         setState(() {});
         controller.reset();
         controller.forward();
@@ -111,11 +114,11 @@ class _FlashDrawerState extends State<FlashDrawer>
         children: <Widget>[
           Container(
             height: 48.w.toDouble(),
-            width: pageIndex == index
+            width: drawerNotifier.pageIndex == index
                 ? (MediaQuery.of(context).size.width - 40.w.toDouble()) *
                     controller.value
                 : MediaQuery.of(context).size.width - 40.w.toDouble(),
-            decoration: pageIndex == index
+            decoration: drawerNotifier.pageIndex == index
                 ? BoxDecoration(
                     color: const Color(0xfff1effa),
                     borderRadius: BorderRadius.only(

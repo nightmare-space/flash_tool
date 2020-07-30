@@ -28,6 +28,7 @@ class DrawerNotifier extends ChangeNotifier {
       notifyListeners();
     });
   }
+  int pageIndex = 0;
   bool isScroll = false;
   ScrollController controller = ScrollController(
       initialScrollOffset:
@@ -50,6 +51,10 @@ class DrawerNotifier extends ChangeNotifier {
   // void initPageCTL(){
 
   // }
+  void changeIndex(int _index) {
+    pageIndex = _index;
+    notifyListeners();
+  }
 
   void addDrawerListener(void Function() callback) {
     listener = callback;

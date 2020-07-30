@@ -24,7 +24,7 @@ class _DevicesListState extends State<DevicesList> {
   DevicesState devicesState;
   @override
   Widget build(BuildContext context) {
-    devicesState = Provider.of(context, listen: false);
+    devicesState = Provider.of(context, listen: true);
     return Stack(
       children: <Widget>[
         SizedBox(
