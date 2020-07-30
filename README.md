@@ -3,7 +3,7 @@
 这是使用 Flutter 框架开发的线刷工具，为了方便单独维护。
 封装成dart package 的形式，可以在任何地方复用这个组件。
 
-Language: 中文简体 | [English](https://github.com/nightmare-space/flash_tool/blob/master/README-EN.md)
+Language: 中文简体 | [English](README_EN.md)
 
 ## 支持的平台
 - [x] windows
