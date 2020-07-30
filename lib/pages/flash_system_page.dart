@@ -7,9 +7,7 @@ import 'package:flash_tool/config/config.dart';
 import 'package:flash_tool/config/toolkit_colors.dart';
 import 'package:flash_tool/provider/devices_state.dart';
 import 'package:flash_tool/themes/text_colors.dart';
-import 'package:flash_tool/utils/platform_util.dart';
 import 'package:flash_tool/widgets/custom_list.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -58,8 +56,8 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
           elevation: 0.0,
           centerTitle: true,
           title: Text(
-            '刷写Rom${devicesState.curDevice}',
-            style: TextStyle(
+            '刷写Rom(${devicesState.curDevice})',
+            style: const TextStyle(
               fontWeight: FontWeight.bold,
               color: TextColors.fontColor,
             ),
@@ -67,9 +65,9 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
         ),
         body: SingleChildScrollView(
           child: Column(
-            children: [
+            children: <Widget>[
               Row(
-                children: [
+                children: <Widget>[
                   Container(
                     width: 10.w.toDouble(),
                     height: 40.w.toDouble(),
@@ -90,11 +88,11 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
               ),
               Row(
                 mainAxisAlignment: MainAxisAlignment.center,
-                children: [
+                children: <Widget>[
                   Container(
                     margin: EdgeInsets.all(16.w.toDouble()),
                     decoration: BoxDecoration(
-                      color: Color(0xFFF0F1F3),
+                      color: const Color(0xFFF0F1F3),
                       borderRadius: BorderRadius.circular(
                         12.w.toDouble(),
                       ),
@@ -120,8 +118,9 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
               ),
               GestureDetector(
                 onTap: () async {
-                  FileChooserResult fileChooserResult = await showOpenPanel(
-                    allowedFileTypes: [
+                  final FileChooserResult fileChooserResult =
+                      await showOpenPanel(
+                    allowedFileTypes: <FileTypeFilterGroup>[
                       // FileTypeFilterGroup(label: shType, fileExtensions: [shType])
                     ],
                     canSelectDirectories: true,
@@ -157,7 +156,7 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
                   ),
                 ),
               ),
-              Text(
+              const Text(
                 '需要先解压线刷包，然后选择刷机脚本所在的目录，一般也是images这个文件夹所在的目录。',
                 style: TextStyle(
                   color: TextColors.fontColor,
@@ -165,7 +164,7 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
                 ),
               ),
               Row(
-                children: [
+                children: <Widget>[
                   Container(
                     width: 10.w.toDouble(),
                     height: 40.w.toDouble(),
@@ -186,12 +185,12 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
               ),
               Wrap(
                 spacing: 100.w.toDouble(),
-                children: [
+                children: <Widget>[
                   SizedBox(
                     width: 200.w.toDouble(),
                     child: Row(
                       crossAxisAlignment: CrossAxisAlignment.center,
-                      children: [
+                      children: <Widget>[
                         Radio<FlashMode>(
                           value: FlashMode.deleteAll,
                           groupValue: _flashMode,
@@ -211,7 +210,7 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
                   SizedBox(
                     width: 200.w.toDouble(),
                     child: Row(
-                      children: [
+                      children: <Widget>[
                         Radio<FlashMode>(
                           value: FlashMode.saveUserData,
                           groupValue: _flashMode,
@@ -231,7 +230,7 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
                   SizedBox(
                     width: 200.w.toDouble(),
                     child: Row(
-                      children: [
+                      children: <Widget>[
                         Radio<FlashMode>(
                           value: FlashMode.deleteAllAndLock,
                           groupValue: _flashMode,
@@ -251,7 +250,7 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
                 ],
               ),
               Row(
-                children: [
+                children: <Widget>[
                   Text(
                     '开启缓存（避免存在刷写失败的问题）',
                     style: TextStyle(
@@ -285,7 +284,7 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
                   // return;
                   devicesState.setLock();
                   final Map<String, String> envir =
-                      Map.from(Platform.environment);
+                      Map<String, String>.from(Platform.environment);
                   if (Platform.isWindows) {
                     envir['PATH'] += ';${Config.binPah}';
                   }
@@ -348,17 +347,17 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
                   });
                 },
                 child: Container(
-                  margin: EdgeInsets.all(16.w.toDouble()),
+                  margin: EdgeInsets.all(8.w.toDouble()),
                   decoration: BoxDecoration(
                     color: MToolkitColors.candyColor[3],
                     borderRadius: BorderRadius.circular(
                       16.w.toDouble(),
                     ),
                   ),
-                  width: MediaQuery.of(context).size.width / 4,
+                  width: 200.w.toDouble(),
                   height: 48.w.toDouble(),
                   child: Stack(
-                    children: [
+                    children: <Widget>[
                       Container(
                         width: MediaQuery.of(context).size.width /
                             4 *
@@ -371,7 +370,7 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
                         ),
                       ),
                       Stack(
-                        children: [
+                        children: <Widget>[
                           Center(
                             child: Text(
                               isFlashing ? '刷入中' : '开始刷入',
@@ -405,7 +404,7 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
                 child: Container(
                   padding: EdgeInsets.all(8.w.toDouble()),
                   decoration: BoxDecoration(
-                    color: Color(0xFFF0F1F3),
+                    color: const Color(0xFFF0F1F3),
                     borderRadius: BorderRadius.circular(
                       12.w.toDouble(),
                     ),
@@ -415,7 +414,7 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
                   child: Scrollbar(
                     child: CustomList(
                       child: Text(
-                        termOut == '' ? '等待刷入' : '${termOut.trim()}',
+                        termOut == '' ? '等待刷入' : termOut.trim(),
                         style: TextStyle(
                           fontSize: 18.w.toDouble(),
                           fontWeight: FontWeight.bold,

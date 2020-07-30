@@ -26,7 +26,7 @@ class _FlashRecoveryPCState extends State<FlashRecoveryPC> {
     //   fontColor: PrintColor.black,
     // );
 
-    DevicesState devicesState = Provider.of(context);
+    final DevicesState devicesState = Provider.of(context);
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Colors.transparent,
@@ -34,16 +34,16 @@ class _FlashRecoveryPCState extends State<FlashRecoveryPC> {
         centerTitle: true,
         title: Text(
           '刷写Rec${devicesState.curDevice}',
-          style: TextStyle(
+          style: const TextStyle(
             fontWeight: FontWeight.bold,
             color: TextColors.fontColor,
           ),
         ),
       ),
       body: Column(
-        children: [
+        children: <Widget>[
           Row(
-            children: [
+            children: <Widget>[
               Container(
                 width: 10.w.toDouble(),
                 height: 40.w.toDouble(),
@@ -63,11 +63,11 @@ class _FlashRecoveryPCState extends State<FlashRecoveryPC> {
             ],
           ),
           Row(
-            children: [
+            children: <Widget>[
               Container(
                 margin: EdgeInsets.all(16.w.toDouble()),
                 decoration: BoxDecoration(
-                  color: Color(0xFFF0F1F3),
+                  color: const Color(0xFFF0F1F3),
                   borderRadius: BorderRadius.circular(
                     12.w.toDouble(),
                   ),
@@ -76,7 +76,7 @@ class _FlashRecoveryPCState extends State<FlashRecoveryPC> {
                 height: 64.w.toDouble(),
                 child: Center(
                   child: Text(
-                    '$recPath',
+                    recPath,
                     style: TextStyle(
                       fontSize: 18.w.toDouble(),
                       fontWeight: FontWeight.bold,
@@ -132,13 +132,14 @@ class _FlashRecoveryPCState extends State<FlashRecoveryPC> {
               termOut = '';
               setState(() {});
               devicesState.setLock();
-              final Map<String, String> envir = Map.from(Platform.environment);
+              final Map<String, String> envir =
+                  Map<String, String>.from(Platform.environment);
               if (Platform.isWindows) {
                 envir['PATH'] += ';${Config.binPah}';
               }
               Process.start(
                 'fastboot',
-                [
+                <String>[
                   '-s',
                   devicesState.curDevice,
                   'flash',
@@ -147,7 +148,7 @@ class _FlashRecoveryPCState extends State<FlashRecoveryPC> {
                 ],
                 runInShell: true,
                 environment: envir,
-              ).then((value) {
+              ).then((Process value) {
                 // value.stdout.transform(utf8.decoder).listen((String out) {
                 //   print('====>$out');
                 // });
@@ -196,7 +197,7 @@ class _FlashRecoveryPCState extends State<FlashRecoveryPC> {
               padding: EdgeInsets.all(8.w.toDouble()),
               child: CustomList(
                 child: Text(
-                  termOut == '' ? '等待刷入' : '${termOut.trim()}',
+                  termOut == '' ? '等待刷入' : termOut.trim(),
                   style: TextStyle(
                     fontSize: 18.w.toDouble(),
                     fontWeight: FontWeight.bold,

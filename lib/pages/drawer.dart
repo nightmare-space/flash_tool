@@ -45,10 +45,10 @@ class _FlashDrawerState extends State<FlashDrawer>
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
+        children: <Widget>[
           Stack(
             alignment: Alignment.center,
-            children: [
+            children: <Widget>[
               SizedBox(
                 height: 100.w.toDouble(),
                 child: Center(
@@ -65,17 +65,17 @@ class _FlashDrawerState extends State<FlashDrawer>
             ],
           ),
           getNavItem(
-            prefix: Icon(Icons.system_update),
+            prefix: const Icon(Icons.system_update),
             title: '刷写系统',
             index: 0,
           ),
           getNavItem(
-            prefix: Icon(Icons.refresh),
+            prefix: const Icon(Icons.refresh),
             title: '刷写Recovery',
             index: 1,
           ),
           getNavItem(
-            prefix: Icon(Icons.usb),
+            prefix: const Icon(Icons.usb),
             title: '刷写其他分区',
             index: 2,
           ),
@@ -90,7 +90,7 @@ class _FlashDrawerState extends State<FlashDrawer>
             title: 'Fastboot功能专区',
             index: 3,
           ),
-          Text('设备列表'),
+          const Text('设备列表'),
           DevicesList(),
         ],
       ),
@@ -108,7 +108,7 @@ class _FlashDrawerState extends State<FlashDrawer>
       },
       child: Stack(
         alignment: Alignment.centerLeft,
-        children: [
+        children: <Widget>[
           Container(
             height: 48.w.toDouble(),
             width: pageIndex == index
@@ -117,7 +117,7 @@ class _FlashDrawerState extends State<FlashDrawer>
                 : MediaQuery.of(context).size.width - 40.w.toDouble(),
             decoration: pageIndex == index
                 ? BoxDecoration(
-                    color: Color(0xfff1effa),
+                    color: const Color(0xfff1effa),
                     borderRadius: BorderRadius.only(
                       topRight: Radius.circular(
                         12.w.toDouble(),
@@ -127,19 +127,19 @@ class _FlashDrawerState extends State<FlashDrawer>
                       ),
                     ),
                   )
-                : BoxDecoration(
+                : const BoxDecoration(
                     color: Colors.white,
                   ),
           ),
           Row(
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
+            children: <Widget>[
               SizedBox(
                 width: 24.w.toDouble(),
               ),
               prefix ??
-                  Icon(
+                  const Icon(
                     Icons.adb,
                   ),
               SizedBox(

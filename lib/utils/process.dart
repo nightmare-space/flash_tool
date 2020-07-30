@@ -2,8 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
-import 'package:flutter/foundation.dart';
-
 abstract class NightmareProcess extends Process {}
 
 typedef ProcessCallBack = void Function(String output);
@@ -52,7 +50,8 @@ class CustomProcess {
     String output = '';
     // _process.stdout.listen()..
 
-    _process.stdin.write(script + '\necho exitCode\necho exitCode >&2\n');
+    _process.stdin.write(script + '\necho exitCode\n');
+    // _process.stdin.write(script + '\necho exitCode\necho exitCode >&2\n');
     if (getStdout)
       await processStdout.transform(utf8.decoder).every((String v) {
         output += v;
@@ -76,7 +75,6 @@ class CustomProcess {
       });
     }
     isUseing = false;
-    print('返回');
     return output.replaceAll('exitCode', '').trim();
   }
 }

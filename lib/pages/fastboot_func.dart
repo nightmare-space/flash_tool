@@ -16,10 +16,11 @@ class FastbootFunc extends StatefulWidget {
 class _FastbootFuncState extends State<FastbootFunc> {
   @override
   Widget build(BuildContext context) {
-    DevicesState devicesState = Provider.of(context);
+    // ignore: unused_local_variable
+    final DevicesState devicesState = Provider.of(context);
 
     return Row(
-      children: [
+      children: <Widget>[
         getFuncItem(
           title: '重启设备',
         ),
@@ -36,7 +37,8 @@ class _FastbootFuncState extends State<FastbootFunc> {
     final DevicesState devicesState = Provider.of(context);
     return GestureDetector(
       onTap: () async {
-        final Map<String, String> envir = Map.from(Platform.environment);
+        final Map<String, String> envir =
+            Map<String, String>.from(Platform.environment);
         if (Platform.isWindows) {
           envir['PATH'] += ';${Config.binPah}';
         }
@@ -44,7 +46,7 @@ class _FastbootFuncState extends State<FastbootFunc> {
         try {
           result = await Process.run(
             'fastboot',
-            [
+            <String>[
               '-s',
               devicesState.curDevice,
               'reboot',

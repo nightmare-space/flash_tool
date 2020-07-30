@@ -34,7 +34,7 @@ class DrawerNotifier extends ChangeNotifier {
           (window.physicalSize.width / window.devicePixelRatio * 3 ~/ 4)
                   .toDouble() +
               4);
-  String _currentRoute = '';
+  final String _currentRoute = '';
   DrawerState drawerState = DrawerState.close; //侧栏是否被打开了
   void Function() listener;
   double drawerWidth =

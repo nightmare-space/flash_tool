@@ -1,9 +1,6 @@
-import 'dart:io';
-import 'dart:math';
 import 'dart:ui';
 
 import 'package:flash_tool/flash_tool.dart';
-import 'package:flash_tool/pages/devices_list.dart';
 import 'package:flash_tool/provider/devices_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
@@ -22,7 +19,7 @@ class _FlashToolMobileState extends State<FlashToolMobile> {
   Widget build(BuildContext context) {
     return MaterialApp(
       home: MultiProvider(
-        providers: [
+        providers: <SingleChildCloneableWidget>[
           ChangeNotifierProvider<DrawerNotifier>(
             create: (_) => DrawerNotifier(),
           ),

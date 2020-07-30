@@ -1,5 +1,4 @@
 import 'package:flash_tool/flash_tool.dart';
-import 'package:flash_tool/pages/flash_system_page.dart';
 import 'package:flash_tool/provider/devices_state.dart';
 import 'package:flash_tool/utils/platform_util.dart';
 import 'package:flutter/material.dart';
@@ -22,7 +21,7 @@ class FlashTool extends StatelessWidget {
       ],
       child: MaterialApp(
         home: Builder(
-          builder: (c) {
+          builder: (BuildContext c) {
             if (PlatformUtil.isDesktop()) {
               ScreenUtil.init(context,
                   width: MediaQuery.of(context).size.width,
