@@ -1,20 +1,13 @@
-import 'dart:io';
-
-import 'package:flash_tool/config/config.dart';
 import 'package:flash_tool/provider/devices_state.dart';
-import 'package:flash_tool/utils/device_utils.dart';
-import 'package:flash_tool/utils/show_toast.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:print_color/print_color.dart';
 import 'package:provider/provider.dart';
 
 class DeviceEntity {
+  DeviceEntity(this.deviceID, this.deviceName);
   final String deviceID;
   final String deviceName;
-
-  DeviceEntity(this.deviceID, this.deviceName);
 }
 
 class DevicesList extends StatefulWidget {
@@ -23,113 +16,48 @@ class DevicesList extends StatefulWidget {
 }
 
 class _DevicesListState extends State<DevicesList> {
-  List<DeviceEntity> devices = [];
-  int deviceIndex = 0;
   @override
   void initState() {
     super.initState();
-    checkAdb();
-  }
-
-  Future<void> checkAdb() async {
-    final Map<String, String> envir = Map.from(Platform.environment);
-    if (Platform.isWindows) {
-      envir['PATH'] += ';${Config.binPah}';
-    }
-    print(envir['PATH']);
-    while (mounted) {
-      await Future<void>.delayed(const Duration(milliseconds: 1000));
-      if (devicesState.lock) {
-        continue;
-      }
-
-      // showToast(context: context, message: envir['PATH']);
-      List<DeviceEntity> tmp = [];
-      // devices.clear();
-      ProcessResult result;
-      try {
-        result = await Process.run(
-          'fastboot',
-          [
-            'devices',
-          ],
-
-          runInShell: true,
-          environment: envir,
-          // includeParentEnvironment: true,
-        );
-      } catch (e) {
-        // print('asdasdasd====>$e');
-      }
-      String trimResult = result.stdout.toString().trim();
-      if (trimResult.isNotEmpty) {
-        for (String line in trimResult.split('\n')) {
-          String deviceId = line.split(RegExp('\\s')).first;
-          ProcessResult result;
-          try {
-            result = await Process.run(
-              'fastboot',
-              [
-                '-s',
-                deviceId,
-                'getvar',
-                'product',
-              ],
-              runInShell: true,
-              environment: envir,
-              // includeParentEnvironment: true,
-            );
-          } catch (e) {
-            // print('asdasdasd====>$e');
-          }
-
-          String deviceName = result.stderr
-              .toString()
-              .split('\n')
-              .first
-              .trim()
-              .replaceAll(RegExp('.*\\s'), '');
-          DeviceEntity deviceEntity =
-              DeviceEntity(deviceId, DeviceUtils.getName(deviceName));
-          tmp.add(deviceEntity);
-        }
-      }
-      if (devicesState.lock) continue;
-      devices = tmp;
-      if (mounted) setState(() {});
-      if (devices.isNotEmpty) {
-        devicesState.setDevice(devices[deviceIndex].deviceID);
-      }
-    }
   }
 
   DevicesState devicesState;
   @override
   Widget build(BuildContext context) {
     devicesState = Provider.of(context, listen: false);
-    return SizedBox(
-      height: 48 * devices.length.w.toDouble(),
-      child: ListView.builder(
-        itemCount: devices.length,
-        itemBuilder: (c, i) {
-          return Row(
-            children: [
-              Radio(
-                value: i,
-                groupValue: deviceIndex,
-                onChanged: (int index) {
-                  deviceIndex = index;
-                  devicesState.setDevice(devices[i].deviceID);
-                  setState(() {});
-                },
-              ),
-              Text(
-                '${devices[i].deviceID}  ${devices[i].deviceName}',
-              ),
-            ],
-          );
-        },
-      ),
+    return Stack(
+      children: <Widget>[
+        SizedBox(
+          width: MediaQuery.of(context).size.width * 3 / 4,
+          height: 48 * devicesState.devices.length.w.toDouble(),
+          child: ListView.builder(
+            padding: const EdgeInsets.all(0.0),
+            itemCount: devicesState.devices.length,
+            itemBuilder: (BuildContext c, int i) {
+              // return Text('data');
+              return SizedBox(
+                child: Row(
+                  children: <Widget>[
+                    Radio<int>(
+                      value: i,
+                      groupValue: devicesState.deviceIndex,
+                      onChanged: (int index) {
+                        devicesState.deviceIndex = index;
+                        devicesState
+                            .setDevice(devicesState.devices[i].deviceID);
+                        setState(() {});
+                      },
+                    ),
+                    Text(
+                      '${devicesState.devices[i].deviceID}  ${devicesState.devices[i].deviceName}',
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ),
+      ],
     );
   }
 }

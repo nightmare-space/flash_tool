@@ -3,8 +3,6 @@ import 'dart:io';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:process_run/shell.dart';
-import 'package:process_run/process_run.dart';
 
 class WinTerm extends StatefulWidget {
   const WinTerm({Key key, this.execScript = ''}) : super(key: key);
@@ -28,7 +26,7 @@ class _WinTermState extends State<WinTerm> {
     // envirInit();
     winProcess = await Process.start(
       'sh',
-      [],
+      <String>[],
       runInShell: false,
       mode: ProcessStartMode.normal,
       // mode: kReleaseMode
@@ -177,13 +175,13 @@ class _WinTermState extends State<WinTerm> {
     return Scaffold(
       backgroundColor: Colors.black,
       body: Stack(
-        children: [
+        children: <Widget>[
           SingleChildScrollView(
             child: RichText(
               text: TextSpan(
                 style: const TextStyle(
                     fontSize: 12.0, fontFamily: 'SourceHanSansSC-Light'),
-                children: listSpan + [],
+                children: listSpan + <InlineSpan>[],
               ),
             ),
           ),
@@ -239,7 +237,7 @@ class _WinTermState extends State<WinTerm> {
             child: IconButton(
               hoverColor: Colors.grey.withOpacity(.4),
               iconSize: 100,
-              icon: Icon(
+              icon: const Icon(
                 Icons.keyboard_arrow_left,
                 size: 100,
               ),
