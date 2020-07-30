@@ -2,6 +2,9 @@
 
 这是使用 Flutter 框架开发的线刷工具，为了方便单独维护。
 封装成dart package 的形式，可以在任何地方复用这个组件。
+
+Language: 中文简体 | [English](https://github.com/nightmare-space/flash_tool/blob/master/README-EN.md)
+
 ## 支持的平台
 - [x] windows
 - [x] macos
@@ -27,6 +30,12 @@
 - Flutter 一直是我认为非常优秀的跨平台框架，我想使用它来作为之后绝大部分工具的开发。
 - 我不想关注太多我在 windows 、macos 、linux ,或者是我的 android 设备上的各种平台特性，也不想我会为了开发各个平台的工具花费了大量的学习成本。只需要一套代码，可以编译到各个平台。
 - 包括热重载，热重启，等等，都是我选择 Fluter 框架的理由。
+
+
+
+## 下载
+考虑到中国用户，我提供了一个蓝奏云的连接。
+
 
 
 ## 编译
