@@ -2,11 +2,15 @@ import 'dart:convert';
 import 'dart:io';
 import 'package:file_chooser/file_chooser.dart';
 import 'package:flash_tool/config/config.dart';
+import 'package:flash_tool/config/global.dart';
 import 'package:flash_tool/config/toolkit_colors.dart';
 import 'package:flash_tool/provider/devices_state.dart';
 import 'package:flash_tool/themes/text_colors.dart';
+import 'package:flash_tool/utils/platform_util.dart';
+import 'package:flash_tool/utils/process.dart';
 import 'package:flash_tool/widgets/custom_list.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
@@ -62,97 +66,91 @@ class _FlashRecoveryPCState extends State<FlashRecoveryPC> {
               ),
             ],
           ),
-          Row(
-            children: <Widget>[
-              Container(
-                margin: EdgeInsets.all(16.w.toDouble()),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFF0F1F3),
-                  borderRadius: BorderRadius.circular(
-                    12.w.toDouble(),
-                  ),
-                ),
-                width: MediaQuery.of(context).size.width * 4 / 5,
-                height: 64.w.toDouble(),
-                child: Center(
-                  child: Text(
-                    recPath,
-                    style: TextStyle(
-                      fontSize: 18.w.toDouble(),
-                      fontWeight: FontWeight.bold,
-                      color: TextColors.fontColor,
-                    ),
+          Container(
+            margin: EdgeInsets.all(16.w.toDouble()),
+            decoration: BoxDecoration(
+              color: const Color(0xFFF0F1F3),
+              borderRadius: BorderRadius.circular(
+                12.w.toDouble(),
+              ),
+            ),
+            child: Padding(
+              padding: EdgeInsets.all(
+                16.w.toDouble(),
+              ),
+              child: Center(
+                child: Text(
+                  recPath,
+                  style: TextStyle(
+                    fontSize: 18.w.toDouble(),
+                    fontWeight: FontWeight.bold,
+                    color: TextColors.fontColor,
                   ),
                 ),
               ),
-              GestureDetector(
-                onTap: () async {
-                  final FileChooserResult fileChooserResult =
-                      await showOpenPanel(
-                    allowedFileTypes: <FileTypeFilterGroup>[
-                      const FileTypeFilterGroup(
-                        label: 'img',
-                        fileExtensions: <String>['img'],
-                      ),
-                    ],
-                  );
-                  if (fileChooserResult.canceled) {
-                    return;
-                  }
-                  recPath = fileChooserResult.paths.first;
-                  setState(() {});
-                  print(fileChooserResult.paths);
-                },
-                child: Container(
-                  margin: EdgeInsets.all(16.w.toDouble()),
-                  decoration: BoxDecoration(
-                    color: MToolkitColors.candyColor[1],
-                    borderRadius: BorderRadius.circular(
-                      12.w.toDouble(),
-                    ),
+            ),
+          ),
+          GestureDetector(
+            onTap: () async {
+              if (PlatformUtil.isMobilePhone()) {
+                ClipboardData data =
+                    await Clipboard.getData(Clipboard.kTextPlain);
+                print('''''object''' '');
+                print(data.text);
+
+                recPath = data.text;
+                setState(() {});
+                return;
+              }
+              final FileChooserResult fileChooserResult = await showOpenPanel(
+                allowedFileTypes: <FileTypeFilterGroup>[
+                  const FileTypeFilterGroup(
+                    label: 'img',
+                    fileExtensions: <String>['img'],
                   ),
-                  width: MediaQuery.of(context).size.width / 8,
-                  height: 64.w.toDouble(),
-                  child: Center(
-                    child: Text(
-                      '选择',
-                      style: TextStyle(
-                        fontSize: 20.w.toDouble(),
-                        fontWeight: FontWeight.bold,
-                        color: Colors.white,
-                      ),
-                    ),
+                ],
+              );
+              if (fileChooserResult.canceled) {
+                return;
+              }
+              recPath = fileChooserResult.paths.first;
+              setState(() {});
+              print(fileChooserResult.paths);
+            },
+            child: Container(
+              margin: EdgeInsets.only(
+                bottom: 16.w.toDouble(),
+              ),
+              decoration: BoxDecoration(
+                color: MToolkitColors.candyColor[1],
+                borderRadius: BorderRadius.circular(
+                  24.w.toDouble(),
+                ),
+              ),
+              height: 48.w.toDouble(),
+              width: 200.w.toDouble(),
+              child: Center(
+                child: Text(
+                  //
+                  PlatformUtil.isDesktop() ? '选择' : '粘贴路径',
+                  style: TextStyle(
+                    fontSize: 20.w.toDouble(),
+                    fontWeight: FontWeight.bold,
+                    color: Colors.white,
                   ),
                 ),
               ),
-            ],
+            ),
           ),
           GestureDetector(
             onTap: () async {
               termOut = '';
               setState(() {});
               devicesState.setLock();
-              final Map<String, String> envir =
-                  Map<String, String>.from(Platform.environment);
-              if (Platform.isWindows) {
-                envir['PATH'] += ';${Config.binPah}';
-              }
-              Process.start(
-                'fastboot',
-                <String>[
-                  '-s',
-                  devicesState.curDevice,
-                  'flash',
-                  'recovery',
-                  recPath,
-                ],
-                runInShell: true,
-                environment: envir,
-              ).then((Process value) {
-                // value.stdout.transform(utf8.decoder).listen((String out) {
-                //   print('====>$out');
-                // });
-                value.stderr.transform(utf8.decoder).listen((String out) {
+              if (PlatformUtil.isMobilePhone()) {
+                await CustomProcess.exec(
+                    'fastboot -s ${devicesState.curDevice} flash recovery $recPath 2>&1',
+                    callback: (out) {
                   termOut += out;
                   if (out.contains('Finished')) {
                     devicesState.unLock();
@@ -160,7 +158,33 @@ class _FlashRecoveryPCState extends State<FlashRecoveryPC> {
                   setState(() {});
                   print('====>$out');
                 });
-              });
+                // devicesState.unLock();
+              } else {
+                Process.start(
+                  'fastboot',
+                  <String>[
+                    '-s',
+                    devicesState.curDevice,
+                    'flash',
+                    'recovery',
+                    recPath,
+                  ],
+                  runInShell: true,
+                  environment: Global.instance.paltformEnvir,
+                ).then((Process value) {
+                  // value.stdout.transform(utf8.decoder).listen((String out) {
+                  //   print('====>$out');
+                  // });
+                  value.stderr.transform(utf8.decoder).listen((String out) {
+                    termOut += out;
+                    if (out.contains('Finished')) {
+                      devicesState.unLock();
+                    }
+                    setState(() {});
+                    print('====>$out');
+                  });
+                });
+              }
             },
             child: Container(
               margin: EdgeInsets.all(16.w.toDouble()),
@@ -170,8 +194,8 @@ class _FlashRecoveryPCState extends State<FlashRecoveryPC> {
                   16.w.toDouble(),
                 ),
               ),
-              width: MediaQuery.of(context).size.width / 4,
-              height: 64.w.toDouble(),
+              width: 200.w.toDouble(),
+              height: 48.w.toDouble(),
               child: Center(
                 child: Text(
                   '开始刷入',

@@ -7,7 +7,7 @@ import 'package:flutter/physics.dart';
 import 'package:print_color/print_color.dart';
 import 'package:provider/provider.dart';
 
-import '../provider/drawer_notifier.dart';
+import '../../provider/drawer_notifier.dart';
 
 class FlashToolMobile extends StatefulWidget {
   @override

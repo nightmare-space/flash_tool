@@ -1,8 +1,11 @@
 import 'dart:io';
 
 import 'package:flash_tool/config/config.dart';
+import 'package:flash_tool/config/global.dart';
 import 'package:flash_tool/config/toolkit_colors.dart';
 import 'package:flash_tool/provider/devices_state.dart';
+import 'package:flash_tool/utils/platform_util.dart';
+import 'package:flash_tool/utils/process.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -19,15 +22,17 @@ class _FastbootFuncState extends State<FastbootFunc> {
     // ignore: unused_local_variable
     final DevicesState devicesState = Provider.of(context);
 
-    return Row(
-      children: <Widget>[
-        getFuncItem(
-          title: '重启设备',
-        ),
-        getFuncItem(
-          title: '解锁bootloader',
-        ),
-      ],
+    return Scaffold(
+      body: Row(
+        children: <Widget>[
+          getFuncItem(
+            title: '重启设备',
+          ),
+          getFuncItem(
+            title: '解锁bootloader',
+          ),
+        ],
+      ),
     );
   }
 
@@ -37,27 +42,30 @@ class _FastbootFuncState extends State<FastbootFunc> {
     final DevicesState devicesState = Provider.of(context);
     return GestureDetector(
       onTap: () async {
-        final Map<String, String> envir =
-            Map<String, String>.from(Platform.environment);
-        if (Platform.isWindows) {
-          envir['PATH'] += ';${Config.binPah}';
-        }
+        print('执行重启');
         ProcessResult result;
-        try {
-          result = await Process.run(
-            'fastboot',
-            <String>[
-              '-s',
-              devicesState.curDevice,
-              'reboot',
-            ],
-            runInShell: true,
-            environment: envir,
-            // includeParentEnvironment: true,
-          );
-        } catch (e) {
-          // print('asdasdasd====>$e');
+
+        if (PlatformUtil.isDesktop()) {
+          try {
+            result = await Process.run(
+              'fastboot',
+              <String>[
+                '-s',
+                devicesState.curDevice,
+                'reboot',
+              ],
+              // runInShell: true,
+              environment: Global.instance.paltformEnvir,
+              // includeParentEnvironment: true,
+            );
+          } catch (e) {
+            // print('asdasdasd====>$e');
+          }
+        } else {
+          await CustomProcess.exec(
+              'fastboot -s ${devicesState.curDevice} reboot');
         }
+
         print(result.stderr);
 
         print(result.stdout);

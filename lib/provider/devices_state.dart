@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:flash_tool/config/config.dart';
+import 'package:flash_tool/config/global.dart';
 import 'package:flash_tool/pages/devices_list.dart';
 import 'package:flash_tool/utils/device_utils.dart';
 import 'package:flash_tool/utils/platform_util.dart';
@@ -41,15 +42,8 @@ class DevicesState extends ChangeNotifier {
   }
 
   Future<void> checkAdb() async {
-    final Map<String, String> envir =
-        Map<String, String>.from(Platform.environment);
-    if (Platform.isWindows) {
-      envir['PATH'] += ';${Config.binPah}';
-    } else if (Platform.isAndroid) {
-      envir['PATH'] += ':/data/data/com.example.example/files';
-    }
     debugPrintWithColor(
-      '环境变量=====>${envir['PATH']}',
+      '环境变量=====>${Global.instance.paltformEnvir}',
       backgroundColor: PrintColor.white,
       fontColor: PrintColor.red,
     );
@@ -72,7 +66,7 @@ class DevicesState extends ChangeNotifier {
             ],
 
             runInShell: true,
-            environment: envir,
+            environment: Global.instance.paltformEnvir,
             // includeParentEnvironment: true,
           );
         } catch (e) {
@@ -104,7 +98,7 @@ class DevicesState extends ChangeNotifier {
                   'product',
                 ],
                 runInShell: true,
-                environment: envir,
+                environment: Global.instance.paltformEnvir,
                 // includeParentEnvironment: true,
               );
             } catch (e) {

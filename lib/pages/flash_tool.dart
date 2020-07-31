@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:provider/provider.dart';
 
-import 'flash_tool_desktop.dart';
+import 'desktop/flash_tool_desktop.dart';
 
 // 主要的widget
 // 会自动判断平台

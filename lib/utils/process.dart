@@ -2,6 +2,8 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 
+import 'package:flash_tool/config/config.dart';
+
 abstract class NightmareProcess extends Process {}
 
 typedef ProcessCallBack = void Function(String output);
@@ -28,6 +30,7 @@ class CustomProcess {
       includeParentEnvironment: true,
       runInShell: false,
     );
+    _process.stdin.writeln('export PATH=${Config.binPath}:\$PATH');
     processStderr.transform(utf8.decoder).listen((String event) {
       print('默认监听错误输出=======$event');
     });
