@@ -1,5 +1,6 @@
 import 'package:flash_tool/flash_tool.dart';
 import 'package:flash_tool/provider/devices_state.dart';
+import 'package:flash_tool/provider/drawer_notifier.dart';
 import 'package:flash_tool/utils/platform_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
@@ -18,8 +19,12 @@ class FlashTool extends StatelessWidget {
         ChangeNotifierProvider<DevicesState>(
           create: (_) => DevicesState(),
         ),
+        ChangeNotifierProvider<DrawerNotifier>(
+          create: (_) => DrawerNotifier(),
+        ),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         home: Builder(
           builder: (BuildContext c) {
             if (PlatformUtil.isDesktop()) {

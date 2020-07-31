@@ -29,6 +29,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: '刷机工具',
       theme: ThemeData(
         fontFamily: 'sarasa-ui-sc-semibold',
