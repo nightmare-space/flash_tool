@@ -2,6 +2,7 @@ import 'dart:io';
 import 'dart:typed_data';
 
 import 'package:flash_tool/flash_tool.dart';
+import 'package:flash_tool/utils/platform_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
@@ -11,17 +12,28 @@ void main() {
     SystemChrome.setSystemUIOverlayStyle(
       const SystemUiOverlayStyle(statusBarColor: Colors.transparent),
     );
-    installAdb();
   }
+  installAdb();
 }
 
 Future<void> installAdb() async {
-  final ByteData byteData = await rootBundle.load('assets/android/fastboot');
-  final Uint8List picBytes =
-      byteData.buffer.asUint8List(); //以上两行是从apk内assets文件夹讲文件转换为Uint8List的轮子
-  const String fastPath = '/data/data/com.example.example/files/fastboot';
-  await File(fastPath).writeAsBytes(picBytes);
-  Process.runSync('chmod', <String>['+x', fastPath]);
+  if (Platform.isAndroid) {
+    final ByteData byteData = await rootBundle.load('assets/android/fastboot');
+    final Uint8List picBytes =
+        byteData.buffer.asUint8List(); //以上两行是从apk内assets文件夹讲文件转换为Uint8List的轮子
+    const String fastPath = '/data/data/com.example.example/files/fastboot';
+    await File(fastPath).writeAsBytes(picBytes);
+    Process.runSync('chmod', <String>['+x', fastPath]);
+  }
+  // if (Platform.isMacOS) {
+  //   final ByteData byteData = await rootBundle.load('assets/android/fastboot');
+  //   final Uint8List picBytes =
+  //       byteData.buffer.asUint8List(); //以上两行是从apk内assets文件夹讲文件转换为Uint8List的轮子
+  //   String fastPath =
+  //       FileSystemEntity.parentOf(Platform.resolvedExecutable) + '/fastboot';
+  //   await File(fastPath).writeAsBytes(picBytes);
+  //   Process.runSync('chmod', <String>['+x', fastPath]);
+  // }
 }
 
 class MyApp extends StatelessWidget {

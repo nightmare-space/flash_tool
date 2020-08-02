@@ -8,6 +8,7 @@ class Global {
   Global._internal() {
     paltformEnvir = Map<String, String>.from(Platform.environment);
     if (Platform.isWindows) {
+      // 因为windows环境路径的分割是不一样的
       paltformEnvir['PATH'] += ';${Config.binPath}';
     } else if (Platform.isAndroid) {
       paltformEnvir['PATH'] += ':/data/data/com.example.example/files';
