@@ -81,7 +81,6 @@ class DrawerNotifier extends ChangeNotifier {
   bool get isClose => drawerState == DrawerState.close;
 
   void openDrawer() {
-    print('object');
     controller.animateTo(0,
         duration: const Duration(milliseconds: 500), curve: Curves.ease);
   }

@@ -26,15 +26,21 @@ class FlashTool extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         home: Builder(
-          builder: (BuildContext c) {
+          builder: (BuildContext context) {
             if (PlatformUtil.isDesktop()) {
-              ScreenUtil.init(context,
-                  width: MediaQuery.of(context).size.width,
-                  height: MediaQuery.of(context).size.height,
-                  allowFontScaling: false);
+              ScreenUtil.init(
+                context,
+                width: MediaQuery.of(context).size.width,
+                height: MediaQuery.of(context).size.height,
+                allowFontScaling: false,
+              );
             } else {
-              ScreenUtil.init(context,
-                  width: 414, height: 896, allowFontScaling: false);
+              ScreenUtil.init(
+                context,
+                width: 414,
+                height: 896,
+                allowFontScaling: false,
+              );
             }
             return PlatformUtil.isDesktop()
                 ? FlashToolDesktop()

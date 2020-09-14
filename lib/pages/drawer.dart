@@ -1,4 +1,3 @@
-import 'package:flash_tool/provider/devices_state.dart';
 import 'package:flash_tool/provider/drawer_notifier.dart';
 import 'package:flash_tool/themes/text_colors.dart';
 import 'package:flutter/material.dart';
@@ -21,6 +20,7 @@ class FlashDrawer extends StatefulWidget {
 class _FlashDrawerState extends State<FlashDrawer>
     with SingleTickerProviderStateMixin {
   AnimationController controller;
+  int curIndex = 0;
 
   @override
   void initState() {
@@ -35,6 +35,12 @@ class _FlashDrawerState extends State<FlashDrawer>
       setState(() {});
     });
     controller.forward();
+  }
+
+  @override
+  void dispose() {
+    controller.dispose();
+    super.dispose();
   }
 
   @override
@@ -100,11 +106,10 @@ class _FlashDrawerState extends State<FlashDrawer>
   }
 
   Widget getNavItem({String title, int index, Widget prefix}) {
-    final DrawerNotifier drawerNotifier = Provider.of<DrawerNotifier>(context);
     return GestureDetector(
       onTap: () {
         widget.onChange?.call(index);
-        // pageIndex = index;
+        curIndex = index;
         setState(() {});
         controller.reset();
         controller.forward();
@@ -114,11 +119,11 @@ class _FlashDrawerState extends State<FlashDrawer>
         children: <Widget>[
           Container(
             height: 48.w.toDouble(),
-            width: drawerNotifier.pageIndex == index
+            width: curIndex == index
                 ? (MediaQuery.of(context).size.width - 40.w.toDouble()) *
                     controller.value
                 : MediaQuery.of(context).size.width - 40.w.toDouble(),
-            decoration: drawerNotifier.pageIndex == index
+            decoration: curIndex == index
                 ? BoxDecoration(
                     color: const Color(0xfff1effa),
                     borderRadius: BorderRadius.only(
