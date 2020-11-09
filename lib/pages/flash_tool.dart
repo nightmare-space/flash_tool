@@ -1,9 +1,9 @@
 import 'package:flash_tool/flash_tool.dart';
 import 'package:flash_tool/provider/devices_state.dart';
 import 'package:flash_tool/provider/drawer_notifier.dart';
-import 'package:flash_tool/utils/platform_util.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:global_repository/global_repository.dart';
 import 'package:provider/provider.dart';
 
 import 'desktop/flash_tool_desktop.dart';

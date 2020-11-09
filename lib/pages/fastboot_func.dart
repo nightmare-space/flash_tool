@@ -1,14 +1,12 @@
 import 'dart:io';
 
-import 'package:flash_tool/config/config.dart';
 import 'package:flash_tool/config/global.dart';
 import 'package:flash_tool/config/toolkit_colors.dart';
 import 'package:flash_tool/provider/devices_state.dart';
-import 'package:flash_tool/utils/platform_util.dart';
-import 'package:flash_tool/utils/process.dart';
 import 'package:flutter/material.dart';
 
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:global_repository/global_repository.dart';
 import 'package:provider/provider.dart';
 
 class FastbootFunc extends StatefulWidget {
@@ -62,8 +60,7 @@ class _FastbootFuncState extends State<FastbootFunc> {
             // print('asdasdasd====>$e');
           }
         } else {
-          await CustomProcess.exec(
-              'fastboot -s ${devicesState.curDevice} reboot');
+          await NiProcess.exec('fastboot -s ${devicesState.curDevice} reboot');
         }
 
         print(result.stderr);

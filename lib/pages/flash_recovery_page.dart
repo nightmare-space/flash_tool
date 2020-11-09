@@ -6,12 +6,11 @@ import 'package:flash_tool/config/global.dart';
 import 'package:flash_tool/config/toolkit_colors.dart';
 import 'package:flash_tool/provider/devices_state.dart';
 import 'package:flash_tool/themes/text_colors.dart';
-import 'package:flash_tool/utils/platform_util.dart';
-import 'package:flash_tool/utils/process.dart';
 import 'package:flash_tool/widgets/custom_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:global_repository/global_repository.dart';
 import 'package:provider/provider.dart';
 
 class FlashRecoveryPC extends StatefulWidget {
@@ -148,7 +147,7 @@ class _FlashRecoveryPCState extends State<FlashRecoveryPC> {
               setState(() {});
               devicesState.setLock();
               if (PlatformUtil.isMobilePhone()) {
-                await CustomProcess.exec(
+                await NiProcess.exec(
                     'fastboot -s ${devicesState.curDevice} flash recovery $recPath 2>&1',
                     callback: (out) {
                   termOut += out;

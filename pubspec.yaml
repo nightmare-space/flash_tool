@@ -8,7 +8,6 @@ environment:
   sdk: ">=2.7.0 <3.0.0"
   flutter: ">=1.17.0 <2.0.0"
 
-
 dependencies:
   flutter:
     sdk: flutter
@@ -19,6 +18,9 @@ dependencies:
   provider: ^3.1.0
   file_chooser:
     git: https://github.com/Nightmare-MY/file_chooser.git
+
+  global_repository:
+    path: /Users/nightmare/Desktop/nightmare-space/plugins/global_repository
   process_run: ^0.10.10+2
 dev_dependencies:
   flutter_test:

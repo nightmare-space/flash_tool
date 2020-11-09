@@ -4,10 +4,9 @@ import 'package:flash_tool/config/config.dart';
 import 'package:flash_tool/config/global.dart';
 import 'package:flash_tool/pages/devices_list.dart';
 import 'package:flash_tool/utils/device_utils.dart';
-import 'package:flash_tool/utils/platform_util.dart';
-import 'package:flash_tool/utils/process.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
+import 'package:global_repository/global_repository.dart';
 import 'package:print_color/print_color.dart';
 import 'package:provider/provider.dart';
 
@@ -74,7 +73,11 @@ class DevicesState extends ChangeNotifier {
         }
       } else {
         result = ProcessResult(
-            0, 0, await CustomProcess.exec('fastboot devices'), '');
+          0,
+          0,
+          await NiProcess.exec('fastboot devices'),
+          '',
+        );
       }
       debugPrintWithColor(
         'fastboot devices结果=====>${result.stdout}',
@@ -109,7 +112,7 @@ class DevicesState extends ChangeNotifier {
               0,
               0,
               '',
-              await CustomProcess.exec(
+              await NiProcess.exec(
                 'fastboot -s $deviceId getvar product 2>&1',
               ),
             );
