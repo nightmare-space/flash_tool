@@ -20,7 +20,7 @@ dependencies:
     git: https://github.com/Nightmare-MY/file_chooser.git
 
   global_repository:
-    path: /Users/nightmare/Desktop/nightmare-space/plugins/global_repository
+    git: https://github.com/nightmare-space/global_repository
   process_run: ^0.10.10+2
 dev_dependencies:
   flutter_test:
