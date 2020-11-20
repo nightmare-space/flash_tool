@@ -4,7 +4,6 @@ import 'package:flash_tool/flash_tool.dart';
 import 'package:flash_tool/provider/devices_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/physics.dart';
-import 'package:print_color/print_color.dart';
 import 'package:provider/provider.dart';
 
 import '../../provider/drawer_notifier.dart';
@@ -94,11 +93,11 @@ class _HomePageState extends State<HomePage>
                         drawerNotifier.changeIndex(index);
                         setState(() {});
                         drawerNotifier.closeDrawer();
-                        debugPrintWithColor(
-                          '侧栏改变了页面=========$index',
-                          fontColor: PrintColor.red,
-                          backgroundColor: PrintColor.white,
-                        );
+                        // debugPrintWithColor(
+                        //   '侧栏改变了页面=========$index',
+                        //   fontColor: PrintColor.red,
+                        //   backgroundColor: PrintColor.white,
+                        // );
                       },
                     ),
                   ),
