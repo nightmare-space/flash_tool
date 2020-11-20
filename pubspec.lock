@@ -197,15 +197,6 @@ packages:
       url: "https://pub.flutter-io.cn"
     source: hosted
     version: "1.0.3"
-  print_color:
-    dependency: "direct main"
-    description:
-      path: "."
-      ref: HEAD
-      resolved-ref: "629a53e8d3f238ac906794e53df3c6553f2b0bda"
-      url: "https://github.com/Nightmare-MY/print_color.git"
-    source: git
-    version: "0.0.1"
   process:
     dependency: transitive
     description:
