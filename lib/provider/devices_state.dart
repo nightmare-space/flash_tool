@@ -7,7 +7,6 @@ import 'package:flash_tool/utils/device_utils.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:global_repository/global_repository.dart';
-import 'package:print_color/print_color.dart';
 import 'package:provider/provider.dart';
 
 class DevicesState extends ChangeNotifier {
@@ -23,11 +22,11 @@ class DevicesState extends ChangeNotifier {
   String curDevice = '';
   bool lock = false;
   void setDevice(String id) {
-    debugPrintWithColor(
-      '设置当前设备为=====>$id',
-      backgroundColor: PrintColor.white,
-      fontColor: PrintColor.red,
-    );
+    // debugPrintWithColor(
+    //   '设置当前设备为=====>$id',
+    //   backgroundColor: PrintColor.white,
+    //   fontColor: PrintColor.red,
+    // );
     curDevice = id;
     notifyListeners();
   }
@@ -41,11 +40,11 @@ class DevicesState extends ChangeNotifier {
   }
 
   Future<void> checkAdb() async {
-    debugPrintWithColor(
-      '环境变量=====>${Global.instance.paltformEnvir}',
-      backgroundColor: PrintColor.white,
-      fontColor: PrintColor.red,
-    );
+    // debugPrintWithColor(
+    //   '环境变量=====>${Global.instance.paltformEnvir}',
+    //   backgroundColor: PrintColor.white,
+    //   fontColor: PrintColor.red,
+    // );
     while (true) {
       await Future<void>.delayed(const Duration(milliseconds: 1000));
       if (lock) {
@@ -79,11 +78,11 @@ class DevicesState extends ChangeNotifier {
           '',
         );
       }
-      debugPrintWithColor(
-        'fastboot devices结果=====>${result.stdout}',
-        backgroundColor: PrintColor.white,
-        fontColor: PrintColor.blue,
-      );
+      // debugPrintWithColor(
+      //   'fastboot devices结果=====>${result.stdout}',
+      //   backgroundColor: PrintColor.white,
+      //   fontColor: PrintColor.blue,
+      // );
       // print('result.stderr====>${result.stderr}');
       final String trimResult = result.stdout.toString().trim();
       if (trimResult.isNotEmpty) {
