@@ -12,8 +12,6 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_screenutil: ^2.2.0
-  print_color:
-    git: https://github.com/Nightmare-MY/print_color.git
   # 状态管理
   provider: ^3.1.0
   file_chooser:
