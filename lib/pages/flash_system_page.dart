@@ -215,9 +215,9 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
             GestureDetector(
               onTap: () async {
                 if (PlatformUtil.isMobilePhone()) {
-                  ClipboardData data =
-                      await Clipboard.getData(Clipboard.kTextPlain);
-                  print('''''object''' '');
+                  final ClipboardData data = await Clipboard.getData(
+                    Clipboard.kTextPlain,
+                  );
                   print(data.text);
 
                   romPath = data.text;
@@ -244,10 +244,10 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
                 decoration: BoxDecoration(
                   color: MToolkitColors.candyColor[1],
                   borderRadius: BorderRadius.circular(
-                    24.w.toDouble(),
+                    12.w.toDouble(),
                   ),
                 ),
-                height: 48.w.toDouble(),
+                height: 36.w.toDouble(),
                 width: 200.w.toDouble(),
                 child: Center(
                   child: Text(
@@ -381,11 +381,11 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
                 decoration: BoxDecoration(
                   color: MToolkitColors.candyColor[3],
                   borderRadius: BorderRadius.circular(
-                    16.w.toDouble(),
+                    12.w.toDouble(),
                   ),
                 ),
                 width: 200.w.toDouble(),
-                height: 48.w.toDouble(),
+                height: 36.w.toDouble(),
                 child: Stack(
                   children: <Widget>[
                     Container(
@@ -394,7 +394,7 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
                       decoration: BoxDecoration(
                         color: Colors.green,
                         borderRadius: BorderRadius.circular(
-                          16.w.toDouble(),
+                          12.w.toDouble(),
                         ),
                       ),
                     ),
@@ -404,7 +404,7 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
                           child: Text(
                             isFlashing ? '刷入中' : '开始刷入',
                             style: TextStyle(
-                              fontSize: 20.w.toDouble(),
+                              fontSize: 20.sp.toDouble(),
                               fontWeight: FontWeight.bold,
                               color: Colors.white,
                             ),

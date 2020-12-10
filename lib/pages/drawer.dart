@@ -105,7 +105,11 @@ class _FlashDrawerState extends State<FlashDrawer>
     );
   }
 
-  Widget getNavItem({String title, int index, Widget prefix}) {
+  Widget getNavItem({
+    String title,
+    int index,
+    Widget prefix,
+  }) {
     return GestureDetector(
       onTap: () {
         widget.onChange?.call(index);

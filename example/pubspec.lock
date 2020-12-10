@@ -90,7 +90,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: b06ae64b974de299f37f91205658a4d37a727929
+      resolved-ref: "00c616d8a6fa78776c99068a185ad7015e0292ba"
       url: "https://github.com/Nightmare-MY/file_chooser.git"
     source: git
     version: "0.2.0"
@@ -123,7 +123,7 @@ packages:
     description:
       path: "."
       ref: HEAD
-      resolved-ref: "8039ef03c959b3938360469eccc7a7daf6a43270"
+      resolved-ref: "9c1bbf993e565f756dcd5932c597678a8b897f26"
       url: "https://github.com/nightmare-space/global_repository"
     source: git
     version: "0.0.1"
@@ -224,7 +224,7 @@ packages:
       name: process_run
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "0.10.10+2"
+    version: "0.10.12+3"
   provider:
     dependency: "direct main"
     description:
@@ -306,7 +306,7 @@ packages:
       name: win32
       url: "https://pub.flutter-io.cn"
     source: hosted
-    version: "1.7.3"
+    version: "1.7.4"
   xdg_directories:
     dependency: transitive
     description:
