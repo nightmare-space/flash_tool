@@ -1,8 +1,10 @@
 import 'dart:io';
 
-class Config {
-  Config._();
-  static String packageName = 'data/data/com.example.example/files';
+class FastbootConfig {
+  FastbootConfig._();
+
+  static String flutterPackage = '';
+  static String version = '1.0.7';
   static String get binPath => () {
         if (Platform.isAndroid) {
           return 'data/data/com.example.example/files';
@@ -18,4 +20,5 @@ class Config {
   static String get adbPath => () {
         return binPath + Platform.pathSeparator + 'adb.exe';
       }();
+  static double drawerWidth = 260;
 }
