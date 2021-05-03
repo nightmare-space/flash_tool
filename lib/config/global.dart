@@ -1,21 +1,50 @@
 import 'dart:io';
 
+import 'package:global_repository/global_repository.dart';
+import 'package:termare_pty/termare_pty.dart';
+import 'package:termare_view/termare_view.dart';
+import 'app_colors.dart';
 import 'config.dart';
 
 class Global {
   // 工厂模式
   factory Global() => _getInstance();
   Global._internal() {
-    paltformEnvir = Map<String, String>.from(Platform.environment);
-    if (Platform.isWindows) {
-      // 因为windows环境路径的分割是不一样的
-      paltformEnvir['PATH'] += ';${Config.binPath}';
-    } else if (Platform.isAndroid) {
-      paltformEnvir['PATH'] += ':/data/data/com.example.example/files';
+    String executable = '';
+    if (Platform.environment.containsKey('SHELL')) {
+      executable = Platform.environment['SHELL'];
+      // 取的只是执行的文件名
+      executable = executable.replaceAll(RegExp('.*/'), '');
+    } else {
+      if (Platform.isMacOS) {
+        executable = 'bash';
+      } else if (Platform.isWindows) {
+        executable = 'wsl';
+      } else if (Platform.isAndroid) {
+        executable = 'sh';
+      }
     }
+    Log.e('RuntimeEnvir.path -> ${RuntimeEnvir.path}');
+    final Map<String, String> environment = {
+      'TERM': 'xterm-256color',
+      'PATH': RuntimeEnvir.path,
+    };
+    const String workingDirectory = '.';
+    pseudoTerminal = PseudoTerminal(
+      column: 10,
+      executable: executable,
+      workingDirectory: workingDirectory,
+      environment: environment,
+      arguments: ['-l'],
+    );
+    pseudoTerminal.write('clear\n');
   }
-
-  Map<String, String> paltformEnvir;
+  PseudoTerminal pseudoTerminal;
+  TermareController termareController = TermareController(
+    theme: TermareStyles.macos.copyWith(
+      backgroundColor: AppColors.contentBorder,
+    ),
+  )..hideCursor();
   static Global get instance => _getInstance();
   static Global _instance;
 
