@@ -25,6 +25,7 @@ class _FlashToolBodyState extends State<FlashToolBody>
     return AnnotatedRegion<SystemUiOverlayStyle>(
       value: SystemUiOverlayStyle.dark,
       child: Material(
+        color: Theme.of(context).scaffoldBackgroundColor,
         child: SafeArea(
           child: Row(
             children: <Widget>[

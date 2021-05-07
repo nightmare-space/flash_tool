@@ -33,6 +33,7 @@ class _DrawerPageState extends State<DrawerPage> {
       builder: (context, orientation) {
         print('orientation -> $orientation');
         return Material(
+          color: Theme.of(context).scaffoldBackgroundColor,
           // color: Colors.white,
           child: SafeArea(
             child: SizedBox(
