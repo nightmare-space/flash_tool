@@ -9,14 +9,10 @@ import 'package:global_repository/global_repository.dart';
 class FlashTool extends StatelessWidget {
   FlashTool({
     Key key,
-    this.forPackage = false,
   }) : super(key: key) {
-    if (forPackage) {
-      FastbootConfig.flutterPackage = 'packages/flash_tool/';
-    }
+    FastbootConfig.flutterPackage = 'packages/flash_tool/';
   }
 
-  final bool forPackage;
   @override
   Widget build(BuildContext context) {
     return Builder(
