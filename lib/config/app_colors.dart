@@ -1,6 +1,6 @@
 import 'dart:ui';
 
-import 'candy_colors.dart';
+import 'package:global_repository/global_repository.dart';
 
 class AppColors {
   static Color fontTitle = Color(0xff0d0d14);

@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
 import 'package:flash_tool/config/app_colors.dart';
-import 'package:flash_tool/config/candy_colors.dart';
 import 'package:flash_tool/config/global.dart';
 import 'package:flash_tool/widgets/item_header.dart';
 import 'package:flash_tool/widgets/terminal.dart';
