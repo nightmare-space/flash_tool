@@ -110,7 +110,7 @@ class _FlashSystemPcState extends State<FlashSystemPc> {
         // print('asdasdasd====>$e');
       }
     } else {
-      NiProcess.exec('sh $batPath 2>&1', callback: (String out) {
+      YanProcess().exec('sh $batPath 2>&1', callback: (String out) {
         termOut += out;
 
         final int curNum =
